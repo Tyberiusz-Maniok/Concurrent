@@ -4,9 +4,9 @@ namespace ConcurrentLib
 {
     public class ExampleClass
     {
-        public int doSomething(int param)
+        public int Calculate(int param)
         {
-            throw new NotImplementedException();
+            return param + 2;
         }
     }
 }
