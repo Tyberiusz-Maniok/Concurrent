@@ -4,7 +4,7 @@ namespace ConcurrentLib
 {
     public class ExampleClass
     {
-        public int Calculate(int param)
+        public int AddTwo(int param)
         {
             return param + 2;
         }
