@@ -9,7 +9,7 @@ namespace ConcurrentTest
         public void ExampleTest()
         {
             ConcurrentLib.ExampleClass example = new ConcurrentLib.ExampleClass();
-            Assert.Equal(4, example.Calculate(2));
+            Assert.Equal(4, example.AddTwo(2));
         }
     }
 }
