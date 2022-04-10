@@ -1,34 +1,36 @@
-﻿using Data.Model;
+﻿using Logic.Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Dao
+namespace Model.Dao
 {
     public class DefaultCircleRepository : ICircleRepository
     {
         private List<Circle> circles;
-        public void Add(Circle item)
+        private ICircleService circleService;
+
+        public DefaultCircleRepository(ICircleService circleRepository)
+        {
+            this.circleService = circleRepository;
+        }
+        public void Add(Circle circle)
         {
             throw new NotImplementedException();
         }
 
-        public Circle Get(int id)
+        public void Create()
         {
             throw new NotImplementedException();
         }
 
-        public LinkedList<Circle> GetAll()
+
+        public List<Circle> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Circle Remove(Circle item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Circle item, int id)
+        public Circle Remove(Circle circle)
         {
             throw new NotImplementedException();
         }
