@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Logic.Service
 {
-    internal class RandomCircleService : IPositionGenerator
+    public class RandomPositionGenerator : IPositionGenerator
     {
         private static readonly int RECT_X = 9;
         private static readonly int RECT_Y = 16;
