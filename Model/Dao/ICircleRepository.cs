@@ -10,5 +10,7 @@ namespace Model.Dao
         void Create();
         void Add(Circle circle);
         Circle Remove(Circle circle);
+        void UpdatePosition(Circle circle);
+        void UpdateAllPosition();
     }
 }

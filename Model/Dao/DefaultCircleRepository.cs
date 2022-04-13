@@ -8,11 +8,12 @@ namespace Model.Dao
     public class DefaultCircleRepository : ICircleRepository
     {
         private List<Circle> circles;
-        private ICircleService circleService;
+        private ICircleMovementService circleMovementService;
 
-        public DefaultCircleRepository(ICircleService circleRepository)
+        public DefaultCircleRepository(ICircleMovementService circleMovementService)
         {
-            this.circleService = circleRepository;
+            this.circleMovementService = circleMovementService;
+            this.circles = new List<Circle>();
         }
         public void Add(Circle circle)
         {
@@ -31,6 +32,16 @@ namespace Model.Dao
         }
 
         public Circle Remove(Circle circle)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateAllPosition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdatePosition(Circle circle)
         {
             throw new NotImplementedException();
         }

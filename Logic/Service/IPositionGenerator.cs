@@ -5,9 +5,9 @@ using System.Text;
 namespace Logic.Service
 {
     /// <summary>
-    /// Class responsible for updating Circle data
+    /// Interface responsible for generating Circle position
     /// </summary>
-    public interface ICircleService
+    public interface IPositionGenerator
     {
         double GenerateXPos();
         double GenerateYPos();
