@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Logic.Service
 {
+    /// <summary>
+    /// Interface responsible for updating circle's position
+    /// </summary>
     public interface ICircleMovementService
     {
         double calcXPos(double currentXPos);

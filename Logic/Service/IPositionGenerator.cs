@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Logic.Service
 {
@@ -9,9 +10,9 @@ namespace Logic.Service
     /// </summary>
     public interface IPositionGenerator
     {
-        double GenerateXPos();
-        double GenerateYPos();
-        List<double> GenerateXPosBatch();
-        List<double> GenerateYPosBatch();
+        Task<double> GenerateXPos();
+        Task<double> GenerateYPos();
+        List<double> GenerateXPosBatch(int count);
+        List<double> GenerateYPosBatch(int count);
     }
 }
