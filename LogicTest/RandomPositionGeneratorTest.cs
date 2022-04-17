@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Logic.Dto;
 using Logic.Service;
 using Xunit;
 
@@ -15,21 +16,23 @@ namespace LogicTest
         [Fact]
         public void TestGeneratePos()
         {
-            double x = randomPositionGenerator.GeneratePos(true);
+            double x = randomPositionGenerator.GeneratePos(new CircleDto()).TargetXpos;
             Assert.InRange(x, 50.0, 15950.0);
-            double y = randomPositionGenerator.GeneratePos(false);
+            double y = randomPositionGenerator.GeneratePos(new CircleDto()).TargetYPos;
             Assert.InRange(y, 50.0, 8950.0);
         }
 
         [Fact]
         public void TestGenerateXPosBatch()
         {
-            List<double> x1 = randomPositionGenerator.GeneratePosBatch(20, true);
-            List<double> x2 = randomPositionGenerator.GeneratePosBatch(20, true);
-            Assert.NotEqual(x1, x2);
-            List<double> y1 = randomPositionGenerator.GeneratePosBatch(20, false);
-            List<double> y2 = randomPositionGenerator.GeneratePosBatch(20, false);
-            Assert.NotEqual(y1, y2);
+            List<CircleDto> circles = new List<CircleDto>();
+            for (int i = 0; i < 10; i++)
+            {
+                circles.Add(new CircleDto());
+            }
+            List<CircleDto> c1 = randomPositionGenerator.GeneratePosBatch(circles);
+            List<CircleDto> c2 = randomPositionGenerator.GeneratePosBatch(circles);
+            Assert.NotEqual(c1, c2);
         }
     }
 }

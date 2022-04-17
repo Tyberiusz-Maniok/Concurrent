@@ -15,7 +15,7 @@ namespace Model.Dao
             this.circleMovementService = circleMovementService;
             this.circles = new List<Circle>();
         }
-        public void Add(Circle circle)
+        public bool Add(Circle circle)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +31,7 @@ namespace Model.Dao
             throw new NotImplementedException();
         }
 
-        public Circle Remove(Circle circle)
+        public bool Remove(Circle circle)
         {
             throw new NotImplementedException();
         }

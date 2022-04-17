@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logic.Dto;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
@@ -20,24 +21,53 @@ namespace Logic.Service
             this.circleRadius = circleRadius;
         }
 
-        public double GeneratePos(bool xOrY)
+        private double ClampXPos(double pos)
         {
-            return random.NextDouble() * (xOrY ? RECT_X : RECT_Y) * rectScale;
-        }
-
-        private void AddNewPosition(ConcurrentBag<double> bag, bool xOrY)
-        {
-            bag.Add(GeneratePos(xOrY));
-        }
-
-        public List<double> GeneratePosBatch(int count, bool xOrY)
-        {
-            ConcurrentBag<double> result = new ConcurrentBag<double>();
-            for (int i = 0; i < count; i++)
+            if (pos <= circleRadius)
             {
-                Task.Run(() => AddNewPosition(result, xOrY));
+                return circleRadius;
             }
-            return new List<double>(result);
+            if (pos >= RECT_X * rectScale - circleRadius)
+            {
+                return RECT_X * rectScale - circleRadius;
+            }
+            return pos;
+        }
+
+        private double ClampYPos(double pos)
+        {
+            if (pos <= circleRadius)
+            {
+                return circleRadius;
+            }
+            if (pos >= RECT_Y * rectScale - circleRadius)
+            {
+                return RECT_Y * rectScale - circleRadius;
+            }
+            return pos;
+        }
+
+        public CircleDto GeneratePos(CircleDto circle)
+        {
+            return new CircleDto(circle.XPos, circle.YPos,
+                ClampXPos(random.NextDouble() * RECT_X * rectScale),
+                ClampYPos(random.NextDouble() * RECT_Y * rectScale));
+        }
+
+        public List<CircleDto> GeneratePosBatch(List<CircleDto> circles)
+        {
+            ConcurrentBag<CircleDto> result = new ConcurrentBag<CircleDto>();
+            List<Task> generators = new List<Task>();
+            foreach (CircleDto circle in circles)
+            {
+                generators.Add(new Task(() => result.Add(GeneratePos(circle))));
+            }
+            foreach(var generator in generators)
+            {
+                generator.Start();
+            }
+            Task.WaitAll(generators.ToArray());
+            return new List<CircleDto>(result);
         }
     }
 }
