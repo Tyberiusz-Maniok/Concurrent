@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logic.Dto;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,22 +14,17 @@ namespace Logic.Service
             this.positionGenerator = positionGenerator;
         }
 
-        public double calcXPos(double currentXPos)
+        public CircleDto calcPos(CircleDto current)
         {
             throw new NotImplementedException();
         }
 
-        public List<double> calcXPosBatch(List<double> currentXPos)
+        public List<CircleDto> calcPosBatch()
         {
             throw new NotImplementedException();
         }
 
-        public double calcYPos(double currentYPos)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<double> calcYPosBatch(List<double> currentYPos)
+        public void InitCircles(int count)
         {
             throw new NotImplementedException();
         }

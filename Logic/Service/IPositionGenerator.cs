@@ -10,9 +10,7 @@ namespace Logic.Service
     /// </summary>
     public interface IPositionGenerator
     {
-        Task<double> GenerateXPos();
-        Task<double> GenerateYPos();
-        List<double> GenerateXPosBatch(int count);
-        List<double> GenerateYPosBatch(int count);
+        double GeneratePos(bool xOrY);
+        <List<double> GeneratePosBatch(int count, bool xOrY);
     }
 }

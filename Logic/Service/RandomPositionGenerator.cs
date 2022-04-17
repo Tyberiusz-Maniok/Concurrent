@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,24 +20,24 @@ namespace Logic.Service
             this.circleRadius = circleRadius;
         }
 
-        public async Task<double> GenerateXPos()
+        public double GeneratePos(bool xOrY)
         {
-            throw new NotImplementedException();
+            return random.NextDouble() * (xOrY ? RECT_X : RECT_Y) * rectScale;
         }
 
-        public async Task<double> GenerateYPos()
+        private void AddNewPosition(ConcurrentBag<double> bag, bool xOrY)
         {
-            throw new NotImplementedException();
+            bag.Add(GeneratePos(xOrY));
         }
 
-        public List<double> GenerateXPosBatch(int count)
+        public List<double> GeneratePosBatch(int count, bool xOrY)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<double> GenerateYPosBatch(int count)
-        {
-            throw new NotImplementedException();
+            ConcurrentBag<double> result = new ConcurrentBag<double>();
+            for (int i = 0; i < count; i++)
+            {
+                Task.Run(() => AddNewPosition(result, xOrY));
+            }
+            return new List<double>(result);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logic.Dto;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,9 +10,8 @@ namespace Logic.Service
     /// </summary>
     public interface ICircleMovementService
     {
-        double calcXPos(double currentXPos);
-        double calcYPos(double currentYPos);
-        List<double> calcXPosBatch(List<double> currentXPos);
-        List<double> calcYPosBatch(List<double> currentYPos);
+        CircleDto calcPos(CircleDto current);
+        List<CircleDto> calcPosBatch();
+        void InitCircles(int count);
     }
 }
