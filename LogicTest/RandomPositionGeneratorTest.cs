@@ -32,6 +32,8 @@ namespace LogicTest
             }
             List<CircleDto> c1 = randomPositionGenerator.GeneratePosBatch(circles);
             List<CircleDto> c2 = randomPositionGenerator.GeneratePosBatch(circles);
+            Assert.Equal(10, c1.Count);
+            Assert.Equal(10, c2.Count);
             Assert.NotEqual(c1, c2);
         }
     }

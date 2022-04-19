@@ -11,7 +11,7 @@ namespace Logic.Service
     public interface ICircleMovementService
     {
         CircleDto calcPos(CircleDto current);
-        List<CircleDto> calcPosBatch();
-        void InitCircles(int count);
+        List<CircleDto> calcPosBatch(List<CircleDto> circles);
+        List<CircleDto> InitCircles(int count);
     }
 }

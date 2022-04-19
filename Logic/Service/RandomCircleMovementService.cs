@@ -19,12 +19,12 @@ namespace Logic.Service
             throw new NotImplementedException();
         }
 
-        public List<CircleDto> calcPosBatch()
+        public List<CircleDto> calcPosBatch(List<CircleDto> circles)
         {
             throw new NotImplementedException();
         }
 
-        public void InitCircles(int count)
+        public List<CircleDto> InitCircles(int count)
         {
             throw new NotImplementedException();
         }

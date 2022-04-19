@@ -30,8 +30,8 @@ namespace Logic.Dto
 
         public CircleDto()
         {
-            this.XPos = 0;
-            this.YPos = 0;
+            this.XPos = Radius;
+            this.YPos = Radius;
             this.TargetXpos = double.NaN;
             this.TargetYPos = double.NaN;
         }
