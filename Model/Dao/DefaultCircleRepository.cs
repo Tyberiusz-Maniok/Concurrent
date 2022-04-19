@@ -10,28 +10,16 @@ namespace Model.Dao
         private List<Circle> circles;
         private ICircleMovementService circleMovementService;
 
+        //TODO usunac add i delete,init circles z parametrem ile ich ma byc, metoda robiaca wszystkie kolka, getallcircles, updateall, 
+
         public DefaultCircleRepository(ICircleMovementService circleMovementService)
         {
             this.circleMovementService = circleMovementService;
             this.circles = new List<Circle>();
         }
-        public void Add(Circle circle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Create()
-        {
-            throw new NotImplementedException();
-        }
 
 
         public List<Circle> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Circle Remove(Circle circle)
         {
             throw new NotImplementedException();
         }
@@ -41,9 +29,5 @@ namespace Model.Dao
             throw new NotImplementedException();
         }
 
-        public void UpdatePosition(Circle circle)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
