@@ -18,28 +18,31 @@ namespace LogicTest
         [Fact]
         public void TestCalcPos()
         {
-            CircleDto circle = new CircleDto(CircleDto.Radius, CircleDto.Radius, 1000.0, 1000.0);
-            randomPositionGenerator.Setup(e => e.GeneratePos(new CircleDto())).Returns(circle);
-            randomCircleMovementService = new RandomCircleMovementService(randomPositionGenerator.Object);
-            Assert.Equal(circle, randomCircleMovementService.calcPos(new CircleDto()));
+            CircleDto expectedCircle = new CircleDto(200, 100, 1000.0, 100);
+            CircleDto inputCircle = new CircleDto(100, 100, 1000, 100);
+            randomPositionGenerator.Setup(e => e.GeneratePos(inputCircle)).Returns(expectedCircle);
+            randomCircleMovementService = new RandomCircleMovementService(randomPositionGenerator.Object, 100);
+            Assert.Equal(expectedCircle, randomCircleMovementService.calcPos(inputCircle));
         }
 
 
         [Fact]
         public void TestCalcPosBatch()
         {
-            List<CircleDto> circleExpected = new List<CircleDto>();
+            CircleDto initCircle = new CircleDto(100, 100, 1000, 100);
+            CircleDto expectedCircle = new CircleDto(200, 100, 1000, 100);
+            List<CircleDto> circlesExpected = new List<CircleDto>();
             List<CircleDto> circlesInit = new List<CircleDto>();
             for (int i = 1; i < 11; i++)
             {
-                circleExpected.Add(new CircleDto(CircleDto.Radius, CircleDto.Radius, i * 100.0, i * 100.0));
-                circlesInit.Add(new CircleDto());
+                circlesExpected.Add(expectedCircle);
+                circlesInit.Add(initCircle);
             }
-            randomPositionGenerator.Setup(e => e.GeneratePosBatch(circlesInit)).Returns(circleExpected);
-            randomCircleMovementService = new RandomCircleMovementService(randomPositionGenerator.Object);
+            randomPositionGenerator.Setup(e => e.GeneratePos(initCircle)).Returns(expectedCircle);
+            randomCircleMovementService = new RandomCircleMovementService(randomPositionGenerator.Object, 100.0);
             List<CircleDto> circleResults = randomCircleMovementService.calcPosBatch(circlesInit);
-            Assert.Equal(circleResults.Count, circleExpected.Count);
-            Assert.Equal(circleExpected, circleResults);
+            Assert.Equal(circleResults.Count, circlesExpected.Count);
+            Assert.Equal(circlesExpected, circleResults);
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Logic.Service
 {
     public class RandomPositionGenerator : IPositionGenerator
     {
-        private static readonly int RECT_X = 9;
-        private static readonly int RECT_Y = 16;
+        private static readonly int RECT_X = 16;
+        private static readonly int RECT_Y = 9;
         private Random random = new Random();
         private int rectScale;
         private double circleRadius;
@@ -49,7 +49,17 @@ namespace Logic.Service
 
         public CircleDto GeneratePos(CircleDto circle)
         {
-            return new CircleDto(circle.XPos, circle.YPos,
+            double xPos = circle.XPos;
+            double yPos = circle.YPos;
+            if (xPos < circleRadius)
+            {
+                xPos = ClampXPos(random.NextDouble() * RECT_X * rectScale);
+            }
+            if (yPos < circleRadius)
+            {
+                yPos = ClampYPos(random.NextDouble() * RECT_Y * rectScale);
+            }
+            return new CircleDto(xPos, yPos,
                 ClampXPos(random.NextDouble() * RECT_X * rectScale),
                 ClampYPos(random.NextDouble() * RECT_Y * rectScale));
         }

@@ -16,10 +16,17 @@ namespace LogicTest
         [Fact]
         public void TestGeneratePos()
         {
-            double x = randomPositionGenerator.GeneratePos(new CircleDto()).TargetXpos;
-            Assert.InRange(x, 50.0, 15950.0);
-            double y = randomPositionGenerator.GeneratePos(new CircleDto()).TargetYPos;
-            Assert.InRange(y, 50.0, 8950.0);
+            CircleDto circle = randomPositionGenerator.GeneratePos(new CircleDto());
+            Assert.InRange(circle.XPos, 50.0, 15950.0);
+            Assert.InRange(circle.TargetXPos, 50.0, 15950.0);
+            Assert.InRange(circle.YPos, 50.0, 8950.0);
+            Assert.InRange(circle.TargetYPos, 50.0, 8950.0);
+
+            CircleDto circle2 = randomPositionGenerator.GeneratePos(new CircleDto(100, 200));
+            Assert.Equal(100.0, circle2.XPos);
+            Assert.InRange(circle.TargetXPos, 50.0, 15950.0);
+            Assert.Equal(200.0, circle2.YPos);
+            Assert.InRange(circle.TargetYPos, 50.0, 8950.0);
         }
 
         [Fact]
