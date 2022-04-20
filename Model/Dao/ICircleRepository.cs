@@ -8,5 +8,6 @@ namespace Model.Dao
     {
         List<Circle> GetAll();
         void UpdateAllPosition();
+        void InitCircles(int numberOfCircles);
     }
 }

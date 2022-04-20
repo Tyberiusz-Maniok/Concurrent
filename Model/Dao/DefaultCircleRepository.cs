@@ -10,7 +10,7 @@ namespace Model.Dao
         private List<Circle> circles;
         private ICircleMovementService circleMovementService;
 
-        //TODO usunac add i delete,init circles z parametrem ile ich ma byc, metoda robiaca wszystkie kolka, getallcircles, updateall, 
+        //TODO init circles z parametrem ile ich ma byc, metoda robiaca wszystkie kolka 
 
         public DefaultCircleRepository(ICircleMovementService circleMovementService)
         {
@@ -20,6 +20,11 @@ namespace Model.Dao
 
 
         public List<Circle> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InitCircles(int numberOfCircles)
         {
             throw new NotImplementedException();
         }
