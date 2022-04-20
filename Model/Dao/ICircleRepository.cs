@@ -8,8 +8,8 @@ namespace Model.Dao
     {
         List<Circle> GetAll();
         void Create();
-        void Add(Circle circle);
-        Circle Remove(Circle circle);
+        bool Add(Circle circle);
+        bool Remove(Circle circle);
         void UpdatePosition(Circle circle);
         void UpdateAllPosition();
     }

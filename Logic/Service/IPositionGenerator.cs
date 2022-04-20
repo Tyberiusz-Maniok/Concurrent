@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Logic.Dto;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Logic.Service
 {
@@ -9,9 +11,7 @@ namespace Logic.Service
     /// </summary>
     public interface IPositionGenerator
     {
-        double GenerateXPos();
-        double GenerateYPos();
-        List<double> GenerateXPosBatch();
-        List<double> GenerateYPosBatch();
+        CircleDto GeneratePos(CircleDto circle);
+        List<CircleDto> GeneratePosBatch(List<CircleDto> circles);
     }
 }
