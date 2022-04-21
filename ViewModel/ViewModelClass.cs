@@ -2,10 +2,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading;
 using System.Windows.Input;
-
-
+using Model;
+using Logic.Service;
+using Model.Dao;
 
 namespace ViewModel
 {
@@ -15,15 +18,27 @@ namespace ViewModel
         private readonly int _rectWidth;
         private readonly int _rectHeight;
         private readonly ModelPrezentation _model;
-        private IList _circles;
+        private Thread circleUpdater;
+        private ObservableCollection<Circle> _circles;
+        public ObservableCollection<Circle> Circles
+        {
+            get => _circles;
+            set
+            {
+                if (value.Equals(_circles))
+                    return;
+                _circles = value;
+                OnPropertyChanged(nameof(Circles));
+            }
+        }
 
         public ViewModelClass() : this(ModelPrezentation.CreateApi()) { }
 
-        public ViewModelClass(ModelPrezentation modelPrezentation)
+        public ViewModelClass(ModelPrezentation model)
         {
-            _model = modelPrezentation;
-            _rectWidth = modelPrezentation.RectWidth;
-            _rectHeight = modelPrezentation.RectHeight;
+            _model = model;
+            _rectWidth = _model.RectWidth;
+            _rectHeight = _model.RectHeight;
             Start = new RelayCommand(() => StartAction());
         }
 
@@ -48,8 +63,8 @@ namespace ViewModel
 
         public void StartAction()
         {
-            //Circles = _model.Circles(count);
-            _model.Move(Circles);
+            Circles = _model.InitCircles(count);
+            //_model.Move(Circles);
         }
         public int RectWidth
         {
@@ -58,17 +73,6 @@ namespace ViewModel
         public int RectHeight
         {
             get => _rectHeight;
-        }
-        public IList Circles
-        {
-            get => _circles;
-            set
-            {
-                if (value.Equals(_circles))
-                    return;
-                _circles = value;
-                OnPropertyChanged(nameof(Circles));
-            }
         }
     }
 }

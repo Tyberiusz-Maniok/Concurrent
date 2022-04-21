@@ -11,7 +11,7 @@ namespace Model
 {
     public abstract class ModelPrezentation
     {
-        public ICircleRepository CircleRepository { get;  }
+        public ICircleRepository CircleRepository { get; protected set; }
 
 
         public int RectWidth { get; }
@@ -19,16 +19,28 @@ namespace Model
         
         private ObservableCollection<Circle> items;
 
-        
-        public abstract void Move(IList circles);
-        public IPositionGenerator PositionGenerator
+        public virtual ObservableCollection<Circle> InitCircles(int number)
         {
-            get;
+            return new ObservableCollection<Circle>(CircleRepository.InitCircles(number));
         }
-        public ICircleMovementService Factory
+
+        public virtual ObservableCollection<Circle> Move()
         {
-            get;
+            CircleRepository.UpdateAllPosition();
+            return new ObservableCollection<Circle>(CircleRepository.GetAll());
         }
+/*        public ModelPrezentation()
+        {
+            this.CircleRepository = repository;
+        }*/
+        //public IPositionGenerator PositionGenerator
+        //{
+        //    get;
+        //}
+        //public ICircleMovementService Factory
+        //{
+        //    get;
+        //}
         public static ModelPrezentation CreateApi()
         {
             return new ModelAPI();
@@ -36,26 +48,23 @@ namespace Model
 
 
     }
-    internal class ModelAPI : ModelPrezentation
+    public class ModelAPI : ModelPrezentation
     {
-     
 
-        private ObservableCollection<Circle> circles;
+        //private ObservableCollection<Circle> circles;
     
-        public int RectWidth => 760;
-        public int RectHeight => 310;
+        public int RectWidth => 800;
+        public int RectHeight => 450;
+        //public ModelAPI(ICircleRepository repository) : base(repository) { }
+        public ModelAPI()
+        {
+            IPositionGenerator positionGenerator = new RandomPositionGenerator(50, Circle.radius);
+            ICircleMovementService movementService = new RandomCircleMovementService(positionGenerator, 15);
+            this.CircleRepository = new DefaultCircleRepository(movementService);
+        }
 
         //public ObservableCollection<Circle> Circles(int count)
  
-
-        public override void Move(IList circles)
-        {
-            throw new NotImplementedException();
-        }
-
-        
-     
-        
         //public override ObservableCollection<CircleDto> Circles(int count)
         //=> factory.InitCircles(count);
         //public override void Move(IList Circles)
