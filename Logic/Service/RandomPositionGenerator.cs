@@ -72,7 +72,9 @@ namespace Logic.Service
             {
                 generators.Add(new Task(() => result.Add(GeneratePos(circle))));
             }
+
             foreach (var generator in generators)
+
             {
                 generator.Start();
             }

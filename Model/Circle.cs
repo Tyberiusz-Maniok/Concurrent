@@ -5,7 +5,6 @@ namespace Model
 {
     public class Circle
     {
-        //TODO set some default value for this property
         public static readonly double radius = 50;
         public double XPos { get; set; }
         public double YPos { get; set; }

@@ -19,7 +19,6 @@ namespace Model.Dao
             this.circles = new List<Circle>();
         }
 
-
         public List<Circle> GetAll()
         {
             return circles;
