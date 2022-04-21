@@ -19,6 +19,7 @@ namespace ViewModel
         private readonly int _rectHeight;
         private readonly ModelPrezentation _model;
         private Thread circleUpdater;
+        private bool _keepUpdating;
         private ObservableCollection<Circle> _circles;
         public ObservableCollection<Circle> Circles
         {
@@ -36,6 +37,7 @@ namespace ViewModel
 
         public ViewModelClass(ModelPrezentation model)
         {
+            _keepUpdating = true;
             _model = model;
             _rectWidth = _model.RectWidth;
             _rectHeight = _model.RectHeight;
@@ -64,7 +66,17 @@ namespace ViewModel
         public void StartAction()
         {
             Circles = _model.InitCircles(count);
-            //_model.Move(Circles);
+            circleUpdater = new Thread(() => UpdateCircles());
+            circleUpdater.Start();
+        }
+
+        public void UpdateCircles()
+        {
+            while (_keepUpdating)
+            {
+                Circles = _model.Move();
+                Thread.Sleep(100);
+            }
         }
         public int RectWidth
         {
