@@ -54,7 +54,7 @@ namespace Logic.Service
             }
             return positionGenerator.GeneratePosBatch(circles);
         }
-        
+
         private MovableDto MoveCircle(MovableDto circle)
         {
             double xDir = circle.XDirection();
@@ -66,3 +66,4 @@ namespace Logic.Service
         }
     }
 }
+
