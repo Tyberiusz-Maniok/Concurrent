@@ -61,13 +61,13 @@ namespace ViewModel
         }
 
         public ICommand Start { get; set; }
-        public ICommand Stop { get; set; }
 
         public void StartAction()
         {
             Circles = _model.InitCircles(count);
             circleUpdater = new Thread(() => UpdateCircles());
             circleUpdater.Start();
+            
         }
 
         public void UpdateCircles()

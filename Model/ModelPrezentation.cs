@@ -14,8 +14,8 @@ namespace Model
         public ICircleRepository CircleRepository { get; protected set; }
 
 
-        public int RectWidth { get; }
-        public int RectHeight { get; }
+        public abstract int RectWidth { get; }
+        public abstract int RectHeight { get; }
         
         private ObservableCollection<Circle> items;
 
@@ -52,9 +52,9 @@ namespace Model
     {
 
         //private ObservableCollection<Circle> circles;
-    
-        public int RectWidth => 800;
-        public int RectHeight => 450;
+
+        public override int RectWidth => 720;
+        public override int RectHeight => 405;
         //public ModelAPI(ICircleRepository repository) : base(repository) { }
         public ModelAPI()
         {
