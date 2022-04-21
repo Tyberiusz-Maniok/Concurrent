@@ -19,21 +19,21 @@ namespace Logic.Service
             this.speed = speed;
         }
 
-        public CircleDto calcPos(CircleDto circle)
+        public MovableDto calcPos(MovableDto circle)
         {
-            CircleDto updated = MoveCircle(circle);
-            if (IsCloseToTarget(updated))
+            MovableDto updated = MoveCircle(circle);
+            if (updated.closeToTarget(tolerance))
             {
                 updated = positionGenerator.GeneratePos(updated);
             }
             return updated;
         }
 
-        public List<CircleDto> calcPosBatch(List<CircleDto> circles)
+        public List<MovableDto> calcPosBatch(List<MovableDto> circles)
         {
-            ConcurrentBag<CircleDto> result = new ConcurrentBag<CircleDto>();
+            ConcurrentBag<MovableDto> result = new ConcurrentBag<MovableDto>();
             List<Task> movers = new List<Task>();
-            foreach (CircleDto circle in circles)
+            foreach (MovableDto circle in circles)
             {
                 movers.Add(new Task(() => result.Add(calcPos(circle))));
             }
@@ -42,25 +42,20 @@ namespace Logic.Service
                 mover.Start();
             }
             Task.WaitAll(movers.ToArray());
-            return new List<CircleDto>(result);
+            return new List<MovableDto>(result);
         }
 
-        public List<CircleDto> InitCircles(int count)
+        public List<MovableDto> InitCircles(int count)
         {
-            List<CircleDto> circles = new List<CircleDto>();
+            List<MovableDto> circles = new List<MovableDto>();
             for (int i = 0; i < count; i++)
             {
                 circles.Add(new CircleDto());
             }
             return positionGenerator.GeneratePosBatch(circles);
         }
-
-        private bool IsCloseToTarget(CircleDto circle)
-        {
-            return Math.Abs(circle.XDirection()) < tolerance && Math.Abs(circle.YDirection()) < tolerance;
-        }
         
-        private CircleDto MoveCircle(CircleDto circle)
+        private MovableDto MoveCircle(MovableDto circle)
         {
             double xDir = circle.XDirection();
             double yDir = circle.YDirection();
