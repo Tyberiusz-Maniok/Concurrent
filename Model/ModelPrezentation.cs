@@ -11,10 +11,15 @@ namespace Model
 {
     public abstract class ModelPrezentation
     {
-        public abstract int RectWidth { get; }
-        public abstract int RectHeight { get; }
+        public ICircleRepository CircleRepository { get;  }
+
+
+        public int RectWidth { get; }
+        public int RectHeight { get; }
         
-        public abstract ObservableCollection<CircleDto> Circles(int count);
+        private ObservableCollection<Circle> items;
+
+        
         public abstract void Move(IList circles);
         public IPositionGenerator PositionGenerator
         {
@@ -24,27 +29,24 @@ namespace Model
         {
             get;
         }
-
         public static ModelPrezentation CreateApi()
         {
             return new ModelAPI();
         }
 
+
     }
     internal class ModelAPI : ModelPrezentation
     {
-        // Potrzebuje odwołac sie do funkcji, ktora okresle ile kulek zrobic i w jakim obszarze 
-        //private readonly RandomCircleMovement factory = new RandomCircleMovement(positionGenerator, 5);
-        //private IPositionGenerator positionGenerator = new RandomPositionGenerator(100, 5);
-        //private readonly ICircleMovementService factory = new RandomCircleMovementService(positionGenerator, 5);
-        
-        public override int RectWidth => 760;
-        public override int RectHeight => 310;
+     
 
-        public override ObservableCollection<CircleDto> Circles(int count)
-        {
-            throw new NotImplementedException();
-        }
+        private ObservableCollection<Circle> circles;
+    
+        public int RectWidth => 760;
+        public int RectHeight => 310;
+
+        //public ObservableCollection<Circle> Circles(int count)
+ 
 
         public override void Move(IList circles)
         {

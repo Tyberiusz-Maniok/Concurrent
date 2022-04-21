@@ -48,7 +48,7 @@ namespace ViewModel
 
         public void StartAction()
         {
-            Circles = _model.Circles(count);
+            //Circles = _model.Circles(count);
             _model.Move(Circles);
         }
         public int RectWidth

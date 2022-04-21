@@ -28,10 +28,11 @@ namespace Model.Dao
         {
             List<MovableDto> circlesDto = new List<MovableDto>();
             List<Circle> result = new List<Circle>();
+            circlesDto = circleMovementService.calcPosBatch(circlesDto);
             foreach (Circle circle in this.circles)
             {
                 circlesDto.Add(new CircleDto(circle.XPos, circle.YPos, circle.TargetXPos, circle.TargetYPos));
-                circlesDto = circleMovementService.calcPosBatch(circlesDto);
+                
 
                 foreach (MovableDto dto in circlesDto)
                 {

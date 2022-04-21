@@ -12,11 +12,21 @@ namespace Model
         public double TargetXPos { get; private set; }
         public double TargetYPos { get; private set; }
 
-        public Circle(double xPos, double yPos, double targetXPos, double targetYPos) { }
+        public Circle(double xPos, double yPos, double targetXPos, double targetYPos) 
+        {
+            XPos = xPos;
+            YPos = yPos;
+            TargetXPos = targetXPos;
+            TargetYPos = targetYPos;
+        }
 
         public Circle(MovableDto circleDto) 
         {
-            
+            XPos = circleDto.XPos;
+            YPos = circleDto.YPos;
+            TargetXPos = circleDto.TargetXPos;
+            TargetYPos= circleDto.TargetYPos;
+           
         }
     }
 }
