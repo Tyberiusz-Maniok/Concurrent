@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Logic.Dto;
 
 namespace Model.Dao
 {
@@ -10,7 +11,6 @@ namespace Model.Dao
         private List<Circle> circles;
         private ICircleMovementService circleMovementService;
 
-        //TODO init circles z parametrem ile ich ma byc, metoda robiaca wszystkie kolka 
 
         public DefaultCircleRepository(ICircleMovementService circleMovementService)
         {
@@ -21,18 +21,39 @@ namespace Model.Dao
 
         public List<Circle> GetAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public void InitCircles(int numberOfCircles)
-        {
-            throw new NotImplementedException();
+            return circles;
         }
 
         public void UpdateAllPosition()
         {
-            throw new NotImplementedException();
+            List<MovableDto> circlesDto = new List<MovableDto>();
+            List<Circle> result = new List<Circle>();
+            foreach (Circle circle in this.circles)
+            {
+                circlesDto.Add(new CircleDto(circle.XPos, circle.YPos, circle.TargetXPos, circle.TargetYPos));
+                circlesDto = circleMovementService.calcPosBatch(circlesDto);
+
+                foreach (MovableDto dto in circlesDto)
+                {
+                    result.Add(new Circle(dto));
+                }
+                this.circles = result;
+            }
+            
+
         }
 
+        List<Circle> ICircleRepository.InitCircles(int numberOfCircles)
+        {
+            List<MovableDto> circlesDto = new List<MovableDto>();
+            List<Circle> result = new List<Circle>();
+            circlesDto = circleMovementService.InitCircles(numberOfCircles);
+
+            foreach (MovableDto circle in circlesDto)
+            {
+                result.Add(new Circle(circle));
+            }
+            return result;
+        }
     }
 }

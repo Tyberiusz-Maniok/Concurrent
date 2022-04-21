@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Logic.Service
 {
-    public class RandomCircleMovement : IPositionGenerator
+    public class RandomPositionGenerator : IPositionGenerator
     {
         private static readonly int RECT_X = 16;
         private static readonly int RECT_Y = 9;
@@ -15,7 +15,7 @@ namespace Logic.Service
         private int rectScale;
         private double circleRadius;
 
-        public RandomCircleMovement(int rectScale, double circleRadius)
+        public RandomPositionGenerator(int rectScale, double circleRadius)
         {
             this.rectScale = rectScale;
             this.circleRadius = circleRadius;
@@ -47,7 +47,7 @@ namespace Logic.Service
             return pos;
         }
 
-        public CircleDto GeneratePos(CircleDto circle)
+        public MovableDto GeneratePos(MovableDto circle)
         {
             double xPos = circle.XPos;
             double yPos = circle.YPos;
@@ -64,11 +64,11 @@ namespace Logic.Service
                 ClampYPos(random.NextDouble() * RECT_Y * rectScale));
         }
 
-        public List<CircleDto> GeneratePosBatch(List<CircleDto> circles)
+        public List<MovableDto> GeneratePosBatch(List<MovableDto> circles)
         {
-            ConcurrentBag<CircleDto> result = new ConcurrentBag<CircleDto>();
+            ConcurrentBag<MovableDto> result = new ConcurrentBag<MovableDto>();
             List<Task> generators = new List<Task>();
-            foreach (CircleDto circle in circles)
+            foreach (MovableDto circle in circles)
             {
                 generators.Add(new Task(() => result.Add(GeneratePos(circle))));
             }
@@ -77,7 +77,7 @@ namespace Logic.Service
                 generator.Start();
             }
             Task.WaitAll(generators.ToArray());
-            return new List<CircleDto>(result);
+            return new List<MovableDto>(result);
         }
     }
 }
