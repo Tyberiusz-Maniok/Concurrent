@@ -18,8 +18,8 @@ namespace LogicTest
         [Fact]
         public void TestCalcPos()
         {
-            CircleDto expectedCircle = new CircleDto(200, 100, 1000.0, 100);
-            CircleDto inputCircle = new CircleDto(100, 100, 1000, 100);
+            MovableDto expectedCircle = new CircleDto(200, 100, 1000.0, 100);
+            MovableDto inputCircle = new CircleDto(100, 100, 1000, 100);
             randomPositionGenerator.Setup(e => e.GeneratePos(inputCircle)).Returns(expectedCircle);
             randomCircleMovementService = new RandomCircleMovementService(randomPositionGenerator.Object, 100);
             Assert.Equal(expectedCircle, randomCircleMovementService.calcPos(inputCircle));
@@ -29,10 +29,10 @@ namespace LogicTest
         [Fact]
         public void TestCalcPosBatch()
         {
-            CircleDto initCircle = new CircleDto(100, 100, 1000, 100);
-            CircleDto expectedCircle = new CircleDto(200, 100, 1000, 100);
-            List<CircleDto> circlesExpected = new List<CircleDto>();
-            List<CircleDto> circlesInit = new List<CircleDto>();
+            MovableDto initCircle = new CircleDto(100, 100, 1000, 100);
+            MovableDto expectedCircle = new CircleDto(200, 100, 1000, 100);
+            List<MovableDto> circlesExpected = new List<MovableDto>();
+            List<MovableDto> circlesInit = new List<MovableDto>();
             for (int i = 1; i < 11; i++)
             {
                 circlesExpected.Add(expectedCircle);
@@ -40,7 +40,7 @@ namespace LogicTest
             }
             randomPositionGenerator.Setup(e => e.GeneratePos(initCircle)).Returns(expectedCircle);
             randomCircleMovementService = new RandomCircleMovementService(randomPositionGenerator.Object, 100.0);
-            List<CircleDto> circleResults = randomCircleMovementService.calcPosBatch(circlesInit);
+            List<MovableDto> circleResults = randomCircleMovementService.calcPosBatch(circlesInit);
             Assert.Equal(circleResults.Count, circlesExpected.Count);
             Assert.Equal(circlesExpected, circleResults);
         }

@@ -11,7 +11,7 @@ namespace Logic.Service
     /// </summary>
     public interface IPositionGenerator
     {
-        CircleDto GeneratePos(CircleDto circle);
-        List<CircleDto> GeneratePosBatch(List<CircleDto> circles);
+        MovableDto GeneratePos(MovableDto circle);
+        List<MovableDto> GeneratePosBatch(List<MovableDto> circles);
     }
 }
