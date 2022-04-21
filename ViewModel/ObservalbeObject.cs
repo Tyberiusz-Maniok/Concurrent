@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
-namespace ViewModel.ViewModelCore
+namespace ViewModel
 {
-    class ObservalbeObject : INotifyPropertyChanged
+    public class ObservalbeObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
