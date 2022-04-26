@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Logic.Dto
 {
-    public class CircleDto : MovableDto
+    internal class CircleDto : MovableDto
     {
         public static readonly double Radius = 50.0;
 

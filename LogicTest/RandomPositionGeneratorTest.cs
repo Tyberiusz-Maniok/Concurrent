@@ -11,7 +11,7 @@ namespace LogicTest
 {
     public class RandomPositionGeneratorTest
     {
-        IPositionGenerator randomPositionGenerator = new RandomPositionGenerator(1000, 50.0);
+        IPositionGenerator randomPositionGenerator = new RandomPositionGenerator(16000, 9000, 50.0);
 
         [Fact]
         public void TestGeneratePos()

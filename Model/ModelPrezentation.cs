@@ -58,9 +58,9 @@ namespace Model
         //public ModelAPI(ICircleRepository repository) : base(repository) { }
         public ModelAPI()
         {
-            IPositionGenerator positionGenerator = new RandomPositionGenerator(50, Circle.radius);
-            ICircleMovementService movementService = new RandomCircleMovementService(positionGenerator, 15);
-            this.CircleRepository = new DefaultCircleRepository(movementService);
+            //IPositionGenerator positionGenerator = new RandomPositionGenerator(50, Circle.radius);
+            //ICircleMovementService movementService = new RandomCircleMovementService(positionGenerator, 15);
+            //this.CircleRepository = new DefaultCircleRepository(movementService);
         }
 
         //public ObservableCollection<Circle> Circles(int count)
