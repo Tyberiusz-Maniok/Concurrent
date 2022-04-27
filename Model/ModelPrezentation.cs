@@ -16,6 +16,8 @@ namespace Model
 
         public abstract int RectWidth { get; }
         public abstract int RectHeight { get; }
+
+        public abstract double CircleSpeed { get; }
         
         private ObservableCollection<Circle> items;
 
@@ -55,12 +57,13 @@ namespace Model
 
         public override int RectWidth => 720;
         public override int RectHeight => 405;
+        public override double CircleSpeed => 30;
         //public ModelAPI(ICircleRepository repository) : base(repository) { }
         public ModelAPI()
         {
             //IPositionGenerator positionGenerator = new RandomPositionGenerator(50, Circle.radius);
             //ICircleMovementService movementService = new RandomCircleMovementService(positionGenerator, 15);
-            //this.CircleRepository = new DefaultCircleRepository(movementService);
+            this.CircleRepository = new DefaultCircleRepository(LogicFactory.GetRandomCircleMovementService(RectWidth, RectHeight, CircleSpeed));
         }
 
         //public ObservableCollection<Circle> Circles(int count)
