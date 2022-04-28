@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
+
 namespace Model
 {
     public abstract class ModelPrezentation
@@ -28,8 +29,10 @@ namespace Model
 
         public virtual ObservableCollection<Circle> Move()
         {
+            //CircleRepository = (ICircleRepository)Circles;
             CircleRepository.UpdateAllPosition();
             return new ObservableCollection<Circle>(CircleRepository.GetAll());
+
         }
 /*        public ModelPrezentation()
         {
@@ -57,7 +60,7 @@ namespace Model
 
         public override int RectWidth => 720;
         public override int RectHeight => 405;
-        public override double CircleSpeed => 30;
+        public override double CircleSpeed => 10;
         //public ModelAPI(ICircleRepository repository) : base(repository) { }
         public ModelAPI()
         {

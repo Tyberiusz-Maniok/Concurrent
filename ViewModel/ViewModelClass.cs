@@ -65,8 +65,9 @@ namespace ViewModel
         public void StartAction()
         {
             Circles = _model.InitCircles(count);
-            circleUpdater = new Thread(() => UpdateCircles());
-            circleUpdater.Start();
+            UpdateCircles();
+            //circleUpdater = new Thread(() => UpdateCircles());
+            //circleUpdater.Start();
             
         }
 

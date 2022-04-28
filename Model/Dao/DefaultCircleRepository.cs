@@ -8,7 +8,6 @@ namespace Model.Dao
 {
     public class DefaultCircleRepository : ICircleRepository
     {
-        private List<Circle> circles;
         private List<Circle> Circles { get; set; }
         private ICircleMovementService circleMovementService;
 
@@ -16,12 +15,12 @@ namespace Model.Dao
         public DefaultCircleRepository(ICircleMovementService circleMovementService)
         {
             this.circleMovementService = circleMovementService;
-            this.circles = new List<Circle>();
+            Circles = new List<Circle>();
         }
 
         public List<Circle> GetAll()
         {
-            return circles;
+            return Circles;
         }
 
         public void UpdateAllPosition()
@@ -29,7 +28,7 @@ namespace Model.Dao
             List<MovableDto> circlesDto = new List<MovableDto>();
             List<Circle> result = new List<Circle>();
 
-            foreach (Circle circle in this.circles)
+            foreach (Circle circle in Circles)
             {
                 circlesDto.Add(LogicFactory.CreateCircle(circle.XPos, circle.YPos, circle.TargetXPos, circle.TargetYPos));
             }
@@ -38,7 +37,7 @@ namespace Model.Dao
             {
                 result.Add(new Circle(dto));
             }
-            this.circles = result;
+            Circles = result;
         }
 
         List<Circle> ICircleRepository.InitCircles(int numberOfCircles)
@@ -51,6 +50,7 @@ namespace Model.Dao
             {
                 result.Add(new Circle(circle));
             }
+            Circles = result;
             return result;
         }
     }
