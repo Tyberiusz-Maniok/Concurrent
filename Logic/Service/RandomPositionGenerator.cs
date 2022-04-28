@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace Logic.Service
 {
-    public class RandomPositionGenerator : IPositionGenerator
+    internal class RandomPositionGenerator : IPositionGenerator
     {
-        private static readonly int RECT_X = 16;
-        private static readonly int RECT_Y = 9;
         private Random random = new Random();
-        private int rectScale;
+        private int rectX;
+        private int rectY;
         private double circleRadius;
 
-        public RandomPositionGenerator(int rectScale, double circleRadius)
+        public RandomPositionGenerator(int rectX, int rectY, double circleRadius)
         {
-            this.rectScale = rectScale;
+            this.rectX = rectX;
+            this.rectY = rectY;
             this.circleRadius = circleRadius;
         }
 
@@ -27,9 +27,9 @@ namespace Logic.Service
             {
                 return circleRadius;
             }
-            if (pos >= RECT_X * rectScale - circleRadius)
+            if (pos >= rectX - circleRadius)
             {
-                return RECT_X * rectScale - circleRadius;
+                return rectX - circleRadius;
             }
             return pos;
         }
@@ -40,9 +40,9 @@ namespace Logic.Service
             {
                 return circleRadius;
             }
-            if (pos >= RECT_Y * rectScale - circleRadius)
+            if (pos >= rectY - circleRadius)
             {
-                return RECT_Y * rectScale - circleRadius;
+                return rectY - circleRadius;
             }
             return pos;
         }
@@ -53,15 +53,15 @@ namespace Logic.Service
             double yPos = circle.YPos;
             if (xPos < circleRadius)
             {
-                xPos = ClampXPos(random.NextDouble() * RECT_X * rectScale);
+                xPos = ClampXPos(random.NextDouble() * rectX);
             }
             if (yPos < circleRadius)
             {
-                yPos = ClampYPos(random.NextDouble() * RECT_Y * rectScale);
+                yPos = ClampYPos(random.NextDouble() * rectY);
             }
             return new CircleDto(xPos, yPos,
-                ClampXPos(random.NextDouble() * RECT_X * rectScale),
-                ClampYPos(random.NextDouble() * RECT_Y * rectScale));
+                ClampXPos(random.NextDouble() * rectX),
+                ClampYPos(random.NextDouble() * rectY));
         }
 
         public List<MovableDto> GeneratePosBatch(List<MovableDto> circles)

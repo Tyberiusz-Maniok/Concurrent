@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Logic.Service
 {
-    public class RandomCircleMovementService : ICircleMovementService
+    internal class RandomCircleMovementService : ICircleMovementService
     {
         private IPositionGenerator positionGenerator;
         private double speed;

@@ -31,7 +31,7 @@ namespace Model.Dao
 
             foreach (Circle circle in this.circles)
             {
-                circlesDto.Add(new CircleDto(circle.XPos, circle.YPos, circle.TargetXPos, circle.TargetYPos));
+                circlesDto.Add(LogicFactory.CreateCircle(circle.XPos, circle.YPos, circle.TargetXPos, circle.TargetYPos));
             }
             circlesDto = circleMovementService.calcPosBatch(circlesDto);
             foreach (MovableDto dto in circlesDto)
