@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View" xmlns:viewmodel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="550" Width="740">
 
     <Window.DataContext>
         <viewmodel:ViewModelClass />
     </Window.DataContext>
-    
+
     <Canvas>
         <TextBox
             TextAlignment="Center"
@@ -19,17 +19,25 @@
             Padding="0 5 0 0"
             TextWrapping="Wrap"
             Text="{Binding Count, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-            VerticalAlignment="Top"
+            VerticalAlignment="Center"
             Height="50" Width="100"
-            Canvas.Left="340" Canvas.Top="350" />
+            Canvas.Left="320" Canvas.Top="450" HorizontalAlignment="Left" />
+
+        <Button
+            Content="Stop"
+            VerticalAlignment="Center"
+            Command="{Binding Stop}"
+            Height="50" Width="100"
+            Canvas.Left="190" Canvas.Top="450"
+            HorizontalAlignment="Center" />
 
         <Button
             Content="Start"
             VerticalAlignment="Center"
             Command="{Binding Start}"
             Height="50" Width="100"
-            Canvas.Left="490" Canvas.Top="350"
-            HorizontalAlignment="Center" />
+            Canvas.Left="455" Canvas.Top="450"
+            HorizontalAlignment="Left" RenderTransformOrigin="0.76,0.481" />
 
         <Rectangle
             Stroke="Black"
