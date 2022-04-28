@@ -42,7 +42,10 @@ namespace ViewModel
             _rectWidth = _model.RectWidth;
             _rectHeight = _model.RectHeight;
             Start = new RelayCommand(() => StartAction());
+            Stop = new RelayCommand(() => StopAction());
         }
+
+
 
         public int Count
         {
@@ -62,12 +65,20 @@ namespace ViewModel
 
         public ICommand Start { get; set; }
 
+        public ICommand Stop { get; set; }
+
+        private void StopAction()
+        {
+            _keepUpdating = false;
+            circleUpdater.Join();
+            
+        }
         public void StartAction()
         {
+            _keepUpdating = true;
             Circles = _model.InitCircles(count);
-            UpdateCircles();
-            //circleUpdater = new Thread(() => UpdateCircles());
-            //circleUpdater.Start();
+            circleUpdater = new Thread(() => UpdateCircles());
+            circleUpdater.Start();
             
         }
 

@@ -19,17 +19,25 @@
             Padding="0 5 0 0"
             TextWrapping="Wrap"
             Text="{Binding Count, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-            VerticalAlignment="Top"
+            VerticalAlignment="Center"
             Height="50" Width="100"
-            Canvas.Left="240" Canvas.Top="450" />
+            Canvas.Left="320" Canvas.Top="450" HorizontalAlignment="Left" />
+
+        <Button
+            Content="Stop"
+            VerticalAlignment="Center"
+            Command="{Binding Stop}"
+            Height="50" Width="100"
+            Canvas.Left="190" Canvas.Top="450"
+            HorizontalAlignment="Center" />
 
         <Button
             Content="Start"
             VerticalAlignment="Center"
             Command="{Binding Start}"
             Height="50" Width="100"
-            Canvas.Left="390" Canvas.Top="450"
-            HorizontalAlignment="Center" />
+            Canvas.Left="455" Canvas.Top="450"
+            HorizontalAlignment="Left" RenderTransformOrigin="0.76,0.481" />
 
         <Rectangle
             Stroke="Black"
