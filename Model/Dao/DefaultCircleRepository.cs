@@ -6,6 +6,7 @@ using Logic.Dto;
 
 namespace Model.Dao
 {
+    [Obsolete]
     public class DefaultCircleRepository : ICircleRepository
     {
         private List<Circle> Circles { get; set; }
@@ -32,7 +33,7 @@ namespace Model.Dao
             {
                 circlesDto.Add(LogicFactory.CreateCircle(circle.XPos, circle.YPos, circle.TargetXPos, circle.TargetYPos));
             }
-            circlesDto = circleMovementService.calcPosBatch(circlesDto);
+            //circlesDto = circleMovementService.calcPosBatch(circlesDto);
             foreach (MovableDto dto in circlesDto)
             {
                 result.Add(new Circle(dto));
