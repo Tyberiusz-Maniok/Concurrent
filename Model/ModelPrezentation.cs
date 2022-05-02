@@ -12,7 +12,7 @@ namespace Model
 {
     public abstract class ModelPrezentation
     {
-        public ICircleMovementService CircleMovementService { get; protected set; }
+        public ICircleRepository CircleRepository { get; protected set; }
 
         public abstract int RectWidth { get; }
         public abstract int RectHeight { get; }
@@ -48,7 +48,9 @@ namespace Model
         public override double CircleSpeed => 10;
         public ModelAPI()
         {
-            CircleMovementService = LogicFactory.GetCircleMovementService(RectWidth, RectHeight, Circle.radius, CircleSpeed);
+            ICircleMovementService circleMovementService = LogicFactory.GetCircleMovementService(
+                RectWidth, RectHeight, Circle.radius, CircleSpeed);
+            CircleRepository = new DefaultCircleRepository(circleMovementService);
         }
 
     }

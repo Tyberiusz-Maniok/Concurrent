@@ -20,7 +20,8 @@ namespace Data.Dao
         {
             for (int i = 0; i < count; i++)
             {
-                this.circles.Add(new CircleEntity(ClampXPos(random.NextDouble() * width), ClampYPos(random.NextDouble() * height), 0, 0));
+                this.circles.Add(new CircleEntity(
+                    ClampXPos(random.NextDouble() * rect.Width), ClampYPos(random.NextDouble() * rect.Height), 0, 0));
             }
         }
 

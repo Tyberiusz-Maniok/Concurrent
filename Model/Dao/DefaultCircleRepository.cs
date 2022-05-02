@@ -6,7 +6,6 @@ using Logic.Dto;
 
 namespace Model.Dao
 {
-    [Obsolete]
     public class DefaultCircleRepository : ICircleRepository
     {
         private List<Circle> Circles { get; set; }
@@ -26,14 +25,8 @@ namespace Model.Dao
 
         public void UpdateAllPosition()
         {
-            List<MovableDto> circlesDto = new List<MovableDto>();
+            List<MovableDto> circlesDto = circleMovementService.calcPosBatch();
             List<Circle> result = new List<Circle>();
-
-            foreach (Circle circle in Circles)
-            {
-                circlesDto.Add(LogicFactory.CreateCircle(circle.XPos, circle.YPos, circle.TargetXPos, circle.TargetYPos));
-            }
-            //circlesDto = circleMovementService.calcPosBatch(circlesDto);
             foreach (MovableDto dto in circlesDto)
             {
                 result.Add(new Circle(dto));
@@ -43,10 +36,8 @@ namespace Model.Dao
 
         List<Circle> ICircleRepository.InitCircles(int numberOfCircles)
         {
-            List<MovableDto> circlesDto = new List<MovableDto>();
             List<Circle> result = new List<Circle>();
-            circlesDto = circleMovementService.InitCircles(numberOfCircles);
-
+            List<MovableDto> circlesDto = circleMovementService.InitCircles(numberOfCircles);
             foreach (MovableDto circle in circlesDto)
             {
                 result.Add(new Circle(circle));

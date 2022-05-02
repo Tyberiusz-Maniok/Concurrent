@@ -9,7 +9,7 @@ namespace Data.Dao
     {
         List<MovableEntity> GetAll();
         MovableEntity Get(int id);
-        void Create(int count, int xMax, int yMax);
+        void Create(int count);
         void UpdateAll(List<MovableEntity> items);
     }
 }
