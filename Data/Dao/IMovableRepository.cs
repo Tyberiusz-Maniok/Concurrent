@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Data.Dao
 {
-    public interface MovableRepository
+    public interface IMovableRepository
     {
         List<MovableEntity> GetAll();
         MovableEntity Get(int id);

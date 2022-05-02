@@ -5,21 +5,22 @@ using System.Text;
 
 namespace Data.Dao
 {
-    internal class CircleRepository : MovableRepository
+    internal class CircleRepository : IMovableRepository
     {
         private List<MovableEntity> circles;
         private Random random = new Random();
+        private ScreenParams rect;
 
-        public CircleRepository()
+        public CircleRepository(ScreenParams rect)
         {
             this.circles = new List<MovableEntity>();
+            this.rect = rect;
         }
-        public void Create(int count, int width, int height)
+        public void Create(int count)
         {
             for (int i = 0; i < count; i++)
             {
-                this.circles.Add(new CircleEntity(ClampPos(random.NextDouble() * width, width - CircleEntity.Radius, CircleEntity.Radius),
-                    ClampPos(random.NextDouble() * height, height - CircleEntity.Radius, CircleEntity.Radius), 0, 0));
+                this.circles.Add(new CircleEntity(ClampXPos(random.NextDouble() * width), ClampYPos(random.NextDouble() * height), 0, 0));
             }
         }
 
@@ -38,15 +39,28 @@ namespace Data.Dao
             this.circles = items;
         }
 
-        private double ClampPos(double pos, double max, double min)
+        private double ClampXPos(double pos)
         {
-            if (pos > max)
+            if (pos > rect.UpperXBound())
             {
-                pos = max;
+                pos = rect.UpperXBound();
             }
-            if (pos < min)
+            if (pos < rect.LowerBound())
             {
-                pos = min;
+                pos = rect.LowerBound();
+            }
+            return pos;
+        }
+
+        private double ClampYPos(double pos)
+        {
+            if (pos > rect.UpperYBound())
+            {
+                pos = rect.UpperYBound();
+            }
+            if (pos < rect.LowerBound())
+            {
+                pos = rect.LowerBound();
             }
             return pos;
         }
