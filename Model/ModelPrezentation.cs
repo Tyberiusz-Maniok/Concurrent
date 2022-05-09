@@ -14,7 +14,6 @@ namespace Model
     {
         public ICircleRepository CircleRepository { get; protected set; }
 
-
         public abstract int RectWidth { get; }
         public abstract int RectHeight { get; }
 
@@ -24,14 +23,15 @@ namespace Model
 
         public virtual ObservableCollection<Circle> InitCircles(int number)
         {
-            return new ObservableCollection<Circle>(CircleRepository.InitCircles(number));
+            //return new ObservableCollection<Circle>(CircleRepository.InitCircles(number));
+            throw new NotImplementedException();
         }
 
         public virtual ObservableCollection<Circle> Move()
         {
-            CircleRepository.UpdateAllPosition();
-            return new ObservableCollection<Circle>(CircleRepository.GetAll());
-
+            //CircleRepository.UpdateAllPosition();
+            //return new ObservableCollection<Circle>(CircleRepository.GetAll());
+            throw new NotImplementedException();
         }
         public static ModelPrezentation CreateApi()
         {
@@ -48,7 +48,9 @@ namespace Model
         public override double CircleSpeed => 10;
         public ModelAPI()
         {
-            this.CircleRepository = new DefaultCircleRepository(LogicFactory.GetRandomCircleMovementService(RectWidth, RectHeight, CircleSpeed));
+            ICircleMovementService circleMovementService = LogicFactory.GetCircleMovementService(
+                RectWidth, RectHeight, Circle.radius, CircleSpeed);
+            CircleRepository = new DefaultCircleRepository(circleMovementService);
         }
 
     }

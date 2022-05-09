@@ -6,7 +6,6 @@ namespace Logic.Dto
 {
     public abstract class MovableDto
     {
-        //public static readonly double Radius = 50.0;
         public double XPos { get; private set; }
         public double YPos { get; private set; }
         public double TargetXPos { get; private set; }
@@ -46,10 +45,27 @@ namespace Logic.Dto
             return this.XPos == other.XPos && this.YPos == other.YPos && this.TargetXPos == other.TargetXPos && this.TargetYPos == other.TargetYPos;
         }
 
-        public abstract double XDirection();
+        public virtual double XDirection()
+        {
+            if (Double.IsNaN(TargetXPos))
+            {
+                return 0;
+            }
+            return this.TargetXPos - this.XPos;
+        }
 
-        public abstract double YDirection();
+        public virtual double YDirection()
+        {
+            if (Double.IsNaN(TargetYPos))
+            {
+                return 0;
+            }
+            return this.TargetYPos - this.YPos;
+        }
 
-        public abstract bool closeToTarget(double tolerance);
+        public virtual bool closeToTarget(double tolerance)
+        {
+            return Math.Abs(XDirection()) < tolerance && Math.Abs(YDirection()) < tolerance;
+        }
     }
 }
