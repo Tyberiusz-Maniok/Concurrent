@@ -35,6 +35,12 @@ namespace Data.Dao
             return this.circles;
         }
 
+        public void Update(int id, MovableEntity entity)
+        {
+            this.circles.Remove(Get(id));
+            this.circles.Add(entity);
+        }
+
         public void UpdateAll(List<MovableEntity> items)
         {
             this.circles = items;

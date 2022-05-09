@@ -67,5 +67,13 @@ namespace Logic.Dto
         {
             return Math.Abs(XDirection()) < tolerance && Math.Abs(YDirection()) < tolerance;
         }
+
+        public virtual double DirectionMagnitude()
+        {
+            return Math.Sqrt(XDirection() * XDirection() + YDirection() * YDirection());
+        }
+
+        public abstract bool WallCollision();
+        public abstract bool ObjectCollision(MovableDto other);
     }
 }
