@@ -20,3 +20,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("6d35fdb0-e22f-4c5f-ada8-85ef02f1cf5a")]
 
 [assembly: InternalsVisibleTo("DataTest")]
+[assembly: InternalsVisibleTo("LogicTest")]

@@ -32,8 +32,8 @@ namespace Model
         {
             XPos = circleDto.XPos;
             YPos = circleDto.YPos;
-            TargetXPos = circleDto.TargetXPos;
-            TargetYPos = circleDto.TargetYPos;
+            TargetXPos = circleDto.XDirection;
+            TargetYPos = circleDto.YDirection;
 
         }
     }

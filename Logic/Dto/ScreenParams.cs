@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Entity
+namespace Logic.Dto
 {
     internal static class ScreenParams
     {
@@ -24,6 +24,5 @@ namespace Data.Entity
         {
             return CircleRadius;
         }
-
     }
 }

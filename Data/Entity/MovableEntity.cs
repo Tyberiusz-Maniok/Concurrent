@@ -7,7 +7,6 @@ namespace Data.Entity
     [Serializable]
     public abstract class MovableEntity
     {
-        [NonSerialized]
         public static int nextId = 1;
         public int Id { get; private set; }
         public double XPos { get; set; }
