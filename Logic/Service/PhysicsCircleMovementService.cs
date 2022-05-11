@@ -21,12 +21,18 @@ namespace Logic.Service
 
         public MovableDto calcPos(MovableDto dto)
         {
-            return MoveCircle(dto, null);
+            throw new NotImplementedException();
         }
 
         public List<MovableDto> calcPosBatch()
         {
             throw new NotImplementedException();
+        }
+
+        private void MoveCircle(ref MovableDto circle)
+        {
+            circle.XPos += circle.XDirection * speed;
+            circle.YPos += circle.YDirection * speed;
         }
 
         public List<MovableDto> InitCircles(int count)
@@ -43,14 +49,6 @@ namespace Logic.Service
                 result.Add(new CircleDto(entity));
             }
             return result;
-        }
-
-        private MovableDto MoveCircle(MovableDto circle, BlockingCollection<MovableDto> allCircles)
-        {
-            circle = ResolveWallCollision(circle);
-            List<MovableDto> willCollide = FindCollisions(circle);
-
-            throw new NotImplementedException();
         }
 
         private MovableDto ResolveWallCollision(MovableDto circle)
@@ -92,10 +90,10 @@ namespace Logic.Service
             List<MovableDto> willCollide = new List<MovableDto>();
             foreach (MovableDto mov in EntityToDto(circleRepository.GetAll()))
             {
-                if (!circle.Equals(mov) && circle.ObjectCollision(mov))
-                {
-                    willCollide.Add(mov);
-                }
+                //if (!circle.Equals(mov) && circle.ObjectCollision(mov))
+                //{
+                //    willCollide.Add(mov);
+                //}
             }
             return willCollide;
         }

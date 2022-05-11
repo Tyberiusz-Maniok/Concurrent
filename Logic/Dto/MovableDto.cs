@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Logic.Dto
 {
@@ -13,6 +14,8 @@ namespace Logic.Dto
         public double XDirection { get; set; }
         public double YDirection { get; set; }
         public int Id { get; set; } = 0;
+
+        protected Mutex mutex = new Mutex();
 
         public MovableDto(double xPos, double yPos, double xDirection, double yDirection)
         {
@@ -64,10 +67,20 @@ namespace Logic.Dto
 
         public abstract double Distance(MovableDto other);
 
-        public abstract bool WallCollision();
-        public abstract bool ObjectCollision(MovableDto other);
+        //public abstract bool WallCollision();
+        //public abstract bool ObjectCollision(MovableDto other);
 
-        //public abstract MovableDto ResolveWallCollision();
-        //public abstract MovableDto ResolveObjectCollision();
+        public abstract void ResolveWallCollision();
+        public abstract void ResolveObjectCollision(ref MovableDto other);
+
+        public virtual void TryLock()
+        {
+            mutex.WaitOne();
+        }
+
+        public virtual void ReleaseLock()
+        {
+            mutex.ReleaseMutex();
+        }
     }
 }
