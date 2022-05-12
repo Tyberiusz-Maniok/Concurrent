@@ -23,15 +23,14 @@ namespace Model
 
         public virtual ObservableCollection<Circle> InitCircles(int number)
         {
-            //return new ObservableCollection<Circle>(CircleRepository.InitCircles(number));
-            throw new NotImplementedException();
+            return new ObservableCollection<Circle>(CircleRepository.InitCircles(number));
+            //Halo zmiana
         }
 
         public virtual ObservableCollection<Circle> Move()
         {
-            //CircleRepository.UpdateAllPosition();
-            //return new ObservableCollection<Circle>(CircleRepository.GetAll());
-            throw new NotImplementedException();
+            CircleRepository.UpdateAllPosition();
+            return new ObservableCollection<Circle>(CircleRepository.GetAll());
         }
         public static ModelPrezentation CreateApi()
         {
