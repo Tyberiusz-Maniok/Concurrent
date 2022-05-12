@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View" xmlns:viewmodel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="740">
+        Title="MainWindow" Height="550" Width="780">
 
     <Window.DataContext>
         <viewmodel:ViewModelClass />
@@ -42,7 +42,7 @@
         <Rectangle
             Stroke="Black"
             StrokeThickness="5"
-            Margin="10 10 10 10"
+            Margin="20 25 0 0"
             Height="{Binding RectHeight}" Width="{Binding RectWidth}" />
 
         <ItemsControl ItemsSource="{Binding Circles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">

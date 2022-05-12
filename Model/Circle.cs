@@ -14,7 +14,7 @@ namespace Model
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public static readonly double radius = 50;
+        public static readonly double radius = 25;
         public double XPos { get; set; }
         public double YPos { get; set; }
         public double TargetXPos { get; private set; }
