@@ -15,5 +15,10 @@ namespace Data
             ScreenParams.CircleRadius = radius;
             return new CircleRepository();
         }
+
+        public static MovableEntity CreateCicle(double xPos, double yPos, double xDirection, double yDirection)
+        {
+            return new CircleEntity(xPos, yPos, xDirection, yDirection);
+        }
     }
 }

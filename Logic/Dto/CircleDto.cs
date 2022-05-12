@@ -77,7 +77,7 @@ namespace Logic.Dto
             }
         }
 
-        public override void ResolveObjectCollision(ref MovableDto other)
+        public override void ResolveObjectCollision(MovableDto other)
         {
             try
             {

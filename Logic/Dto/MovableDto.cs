@@ -71,7 +71,7 @@ namespace Logic.Dto
         //public abstract bool ObjectCollision(MovableDto other);
 
         public abstract void ResolveWallCollision();
-        public abstract void ResolveObjectCollision(ref MovableDto other);
+        public abstract void ResolveObjectCollision(MovableDto other);
 
         public virtual void TryLock()
         {
