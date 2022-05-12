@@ -52,7 +52,10 @@ namespace Logic.Service
             circle.ResolveWallCollision();
             foreach (MovableDto other in circles)
             {
-                circle.ResolveObjectCollision(other);
+                if (!other.Equals(circle))
+                {
+                    circle.ResolveObjectCollision(other);
+                }
             }
         }
 

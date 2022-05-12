@@ -24,7 +24,6 @@ namespace Model
         public virtual ObservableCollection<Circle> InitCircles(int number)
         {
             return new ObservableCollection<Circle>(CircleRepository.InitCircles(number));
-            //Halo zmiana
         }
 
         public virtual ObservableCollection<Circle> Move()
