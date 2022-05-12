@@ -10,6 +10,7 @@ namespace Data.Dao
         List<MovableEntity> GetAll();
         MovableEntity Get(int id);
         void Create(int count);
+        void Update(int id, MovableEntity entity);
         void UpdateAll(List<MovableEntity> items);
     }
 }

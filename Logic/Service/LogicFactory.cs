@@ -15,6 +15,9 @@ namespace Logic.Service
 
         public static ICircleMovementService GetCircleMovementService(int width, int height, double circleRadius, double speed)
         {
+            ScreenParams.Width = width;
+            ScreenParams.Height = height;
+            ScreenParams.CircleRadius = circleRadius;
             return new PhysicsCircleMovementService(DataFactory.getCircleRepository(width, height, circleRadius), speed);
         }
     }

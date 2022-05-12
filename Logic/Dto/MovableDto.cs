@@ -1,38 +1,53 @@
-﻿using System;
+﻿using Data.Entity;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Logic.Dto
 {
     public abstract class MovableDto
     {
-        public double XPos { get; private set; }
-        public double YPos { get; private set; }
-        public double TargetXPos { get; private set; }
-        public double TargetYPos { get; private set; }
+        private static Random random = new Random();
+        public double XPos { get; set; }
+        public double YPos { get; set; }
+        public double XDirection { get; set; }
+        public double YDirection { get; set; }
+        public int Id { get; set; } = 0;
 
-        public MovableDto(double xPos, double yPos, double targetXPos, double targetYPos)
+        protected Mutex mutex = new Mutex();
+
+        public MovableDto(double xPos, double yPos, double xDirection, double yDirection)
         {
             this.XPos = xPos;
             this.YPos = yPos;
-            this.TargetXPos = targetXPos;
-            this.TargetYPos = targetYPos;
+            this.XDirection = xDirection;
+            this.YDirection = yDirection;
         }
 
         public MovableDto(double xPos, double yPos)
         {
             this.XPos = xPos;
             this.YPos = yPos;
-            this.TargetXPos = double.NaN;
-            this.TargetYPos = double.NaN;
+            this.XDirection = random.NextDouble();
+            this.YDirection = Math.Sqrt(1 - XDirection);
         }
 
         public MovableDto()
         {
-            this.XPos = 0;
-            this.YPos = 0;
-            this.TargetXPos = double.NaN;
-            this.TargetYPos = double.NaN;
+            this.XPos = ScreenParams.LowerBound();
+            this.YPos = ScreenParams.LowerBound();
+            this.XDirection = random.NextDouble();
+            this.YDirection = Math.Sqrt(1 - XDirection);
+        }
+
+        public MovableDto(MovableEntity entity)
+        {
+            this.Id = entity.Id;
+            this.XPos = entity.XPos;
+            this.YPos = entity.YPos;
+            this.XDirection = entity.TargetXPos;
+            this.YDirection = entity.TargetYPos;
         }
 
         public override bool Equals(Object obj)
@@ -42,30 +57,30 @@ namespace Logic.Dto
                 return false;
             }
             MovableDto other = (MovableDto)obj;
-            return this.XPos == other.XPos && this.YPos == other.YPos && this.TargetXPos == other.TargetXPos && this.TargetYPos == other.TargetYPos;
+            return this.XPos == other.XPos && this.YPos == other.YPos && this.XDirection == other.XDirection && this.YDirection == other.YDirection;
         }
 
-        public virtual double XDirection()
+        public virtual double DirectionMagnitude()
         {
-            if (Double.IsNaN(TargetXPos))
-            {
-                return 0;
-            }
-            return this.TargetXPos - this.XPos;
+            return Math.Sqrt(XDirection * XDirection + YDirection * YDirection);
         }
 
-        public virtual double YDirection()
+        public abstract double Distance(MovableDto other);
+
+        //public abstract bool WallCollision();
+        //public abstract bool ObjectCollision(MovableDto other);
+
+        public abstract void ResolveWallCollision();
+        public abstract void ResolveObjectCollision(MovableDto other);
+
+        public virtual void TryLock()
         {
-            if (Double.IsNaN(TargetYPos))
-            {
-                return 0;
-            }
-            return this.TargetYPos - this.YPos;
+            mutex.WaitOne();
         }
 
-        public virtual bool closeToTarget(double tolerance)
+        public virtual void ReleaseLock()
         {
-            return Math.Abs(XDirection()) < tolerance && Math.Abs(YDirection()) < tolerance;
+            mutex.ReleaseMutex();
         }
     }
 }

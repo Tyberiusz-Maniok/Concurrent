@@ -9,19 +9,19 @@ namespace Data.Dao
     {
         private List<MovableEntity> circles;
         private Random random = new Random();
-        private ScreenParams rect;
 
-        public CircleRepository(ScreenParams rect)
+        public CircleRepository()
         {
             this.circles = new List<MovableEntity>();
-            this.rect = rect;
         }
         public void Create(int count)
         {
             for (int i = 0; i < count; i++)
             {
+                double xDir = random.NextDouble();
                 this.circles.Add(new CircleEntity(
-                    ClampXPos(random.NextDouble() * rect.Width), ClampYPos(random.NextDouble() * rect.Height), 0, 0));
+                    ClampXPos(random.NextDouble() * ScreenParams.Width), ClampYPos(random.NextDouble() * ScreenParams.Height),
+                        xDir, Math.Sqrt(1 - xDir)));
             }
         }
 
@@ -35,6 +35,12 @@ namespace Data.Dao
             return this.circles;
         }
 
+        public void Update(int id, MovableEntity entity)
+        {
+            this.circles.Remove(Get(id));
+            this.circles.Add(entity);
+        }
+
         public void UpdateAll(List<MovableEntity> items)
         {
             this.circles = items;
@@ -42,26 +48,26 @@ namespace Data.Dao
 
         private double ClampXPos(double pos)
         {
-            if (pos > rect.UpperXBound())
+            if (pos > ScreenParams.UpperXBound())
             {
-                pos = rect.UpperXBound();
+                pos = ScreenParams.UpperXBound();
             }
-            if (pos < rect.LowerBound())
+            if (pos < ScreenParams.LowerBound())
             {
-                pos = rect.LowerBound();
+                pos = ScreenParams.LowerBound();
             }
             return pos;
         }
 
         private double ClampYPos(double pos)
         {
-            if (pos > rect.UpperYBound())
+            if (pos > ScreenParams.UpperYBound())
             {
-                pos = rect.UpperYBound();
+                pos = ScreenParams.UpperYBound();
             }
-            if (pos < rect.LowerBound())
+            if (pos < ScreenParams.LowerBound())
             {
-                pos = rect.LowerBound();
+                pos = ScreenParams.LowerBound();
             }
             return pos;
         }
