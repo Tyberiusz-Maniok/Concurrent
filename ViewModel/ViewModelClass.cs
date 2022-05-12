@@ -87,7 +87,7 @@ namespace ViewModel
             while (_keepUpdating)
             {
                 Circles = _model.Move();
-                Thread.Sleep(100);
+                Thread.Sleep(70);
             }
         }
         public int RectWidth

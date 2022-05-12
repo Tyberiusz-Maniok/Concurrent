@@ -17,8 +17,8 @@ namespace Logic.Dto
 
         public override double Distance(MovableDto other)
         {
-            double xDist = this.XPos - other.XPos;
-            double yDist = this.YPos - other.YPos;
+            double xDist = XPos - other.XPos;
+            double yDist = YPos - other.YPos;
             return Math.Sqrt(xDist * xDist + yDist * yDist);
         }
 
@@ -81,29 +81,40 @@ namespace Logic.Dto
         {
             try
             {
-                TryLock();
-                other.TryLock();
-                double distance = Distance(other);
-                if (distance > ScreenParams.CircleRadius * 2)
+                if (Id < other.Id)
                 {
-                    return;
+                    TryLock();
+                    other.TryLock();
                 }
-                double overlap = (ScreenParams.CircleRadius * 2 - distance) / 2;
-                double xDir = other.XDirection - XDirection;
-                double yDir = other.YDirection - YDirection;
-                XPos -= xDir * overlap;
-                YPos -= yDir * overlap;
-                other.XPos += xDir * overlap;
-                other.YPos += yDir * overlap;
-                double xPerpendicular = -yDir;
-                double yPerpendicular = xDir;
-                double response1 = XDirection * xPerpendicular + YDirection * yPerpendicular;
-                double response2 = other.XDirection * xPerpendicular + other.YDirection * yPerpendicular;
-
-                XDirection = xPerpendicular * response1;
-                YDirection = yPerpendicular * response1;
-                other.XDirection = xPerpendicular * response2;
-                other.YDirection = yPerpendicular * response2;
+                else
+                {
+                    other.TryLock();
+                    TryLock();
+                }
+                double distance = Distance(other);
+                bool willCollide = false;
+                if (distance < ScreenParams.CircleRadius * 2)
+                {
+                    willCollide = true;
+                }
+                if (willCollide)
+                {
+                    double overlap = (ScreenParams.CircleRadius * 2 - distance) / 2;
+                    double xDir = (other.XPos - XPos) / distance;
+                    double yDir = (other.YPos - YPos) / distance;
+                    XPos -= xDir * overlap;
+                    YPos -= yDir * overlap;
+                    other.XPos += xDir * overlap;
+                    other.YPos += yDir * overlap;
+                    double xPerpendicular = -yDir;
+                    double yPerpendicular = xDir;
+                    double response1 = XDirection * xPerpendicular + YDirection * yPerpendicular;
+                    double response2 = other.XDirection * xPerpendicular + other.YDirection * yPerpendicular;
+                    XDirection = xPerpendicular * response1;
+                    YDirection = yPerpendicular * response1;
+                    other.XDirection = xPerpendicular * response2;
+                    other.YDirection = yPerpendicular * response2;
+                }
             }
             finally
             {
