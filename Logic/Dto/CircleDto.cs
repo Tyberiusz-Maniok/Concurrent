@@ -100,8 +100,8 @@ namespace Logic.Dto
                 if (willCollide)
                 {
                     double overlap = (ScreenParams.CircleRadius * 2 - distance) / 2;
-                    double xDir = other.XDirection - XDirection;
-                    double yDir = other.YDirection - YDirection;
+                    double xDir = (other.XPos - XPos) / distance;
+                    double yDir = (other.YPos - YPos) / distance;
                     XPos -= xDir * overlap;
                     YPos -= yDir * overlap;
                     other.XPos += xDir * overlap;
