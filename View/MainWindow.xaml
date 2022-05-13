@@ -45,7 +45,7 @@
             Margin="10 10 10 10"
             Height="{Binding RectHeight}" Width="{Binding RectWidth}" />
 
-        <ItemsControl ItemsSource="{Binding Circles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+        <ItemsControl ItemsSource="{Binding Circles, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>

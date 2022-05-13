@@ -60,7 +60,7 @@ namespace Logic.Dto
                 }
                 if (XPos > ScreenParams.UpperXBound())
                 {
-                    double diff = Math.Abs(YPos - ScreenParams.UpperXBound());
+                    double diff = Math.Abs(XPos - ScreenParams.UpperXBound());
                     XPos -= diff;
                     XDirection *= -1;
                 }
