@@ -13,50 +13,31 @@ namespace Logic.Service
     internal class PhysicsCircleMovementService : ICircleMovementService
     {
         private IMovableRepository circleRepository;
-        private double speed;
+        private List<MovableEntity> Circles;
 
-        public PhysicsCircleMovementService(IMovableRepository circleRepository, double speed)
+        public PhysicsCircleMovementService(IMovableRepository circleRepository)
         {
             this.circleRepository = circleRepository;
-            this.speed = speed;
+            Circles = new List<MovableEntity>();
         }
 
-        /*
-        public MovableDto calcPos(MovableDto dto)
+        public void calcPosBatch()
         {
-            throw new NotImplementedException();
-        }
-        */
-
-        public List<MovableDto> calcPosBatch()
-        {
-            List<MovableDto> circles = EntityToDto(circleRepository.GetAll());
             List<Task> tasks = new List<Task>();
-            foreach (MovableDto circle in circles)
+            foreach (MovableEntity circle in Circles)
             {
-                tasks.Add(new Task(() => MoveCircle(circle, ref circles)));
+                tasks.Add(new Task(() => circle.Move()));
             }
             foreach (Task task in tasks)
             {
                 task.Start();
             }
             Task.WaitAll(tasks.ToArray());
-            circleRepository.UpdateAll(DtoToEntity(circles));
-            return circles;
-        } 
+        }
 
-        private void MoveCircle(MovableDto circle, ref List<MovableDto> circles)
+        public List<MovableDto> GetCircles()
         {
-            circle.XPos += circle.XDirection * speed;
-            circle.YPos += circle.YDirection * speed;
-            circle.ResolveWallCollision();
-            foreach (MovableDto other in circles)
-            {
-                if (!other.Equals(circle))
-                {
-                    circle.ResolveObjectCollision(other);
-                }
-            }
+            throw new NotImplementedException();
         }
 
         public List<MovableDto> InitCircles(int count)
@@ -65,18 +46,6 @@ namespace Logic.Service
             return EntityToDto(circleRepository.GetAll());
         }
 
-        private List<MovableEntity> DtoToEntity(List<MovableDto> circles)
-        {
-            List<MovableEntity> circleEntities = new List<MovableEntity>();
-            foreach (MovableDto circle in circles)
-            {
-                MovableEntity circleEntity = DataFactory.CreateCicle(circle.XPos, circle.YPos, circle.XDirection, circle.YDirection);
-                circleEntity.Id = circle.Id;
-                circleEntities.Add(circleEntity);
-
-            }
-            return circleEntities;
-        }
         private List<MovableDto> EntityToDto(List<MovableEntity> entities)
         {
             List<MovableDto> result = new List<MovableDto>();
@@ -87,40 +56,91 @@ namespace Logic.Service
             return result;
         }
 
-        [Obsolete]
-        private MovableDto ResolveWallCollision(MovableDto circle)
+        private void ResolveCollision(ref MovableEntity circle)
         {
-            if (circle.XPos < ScreenParams.LowerBound())
-            {
-                double diff = Math.Abs(circle.XPos - ScreenParams.LowerBound());
-                circle.XPos = circle.XPos + diff;
-                circle.XDirection = -circle.XDirection;
+            ResolveWallCollision(circle);
+            foreach (MovableEntity c in Circles) {
+                if (!c.Equals(circle))
+                {
+                    ResolveCircleCollision(circle, c);
+                }
             }
-            if (circle.YPos < ScreenParams.LowerBound())
-            {
-                double diff = Math.Abs(circle.YPos - ScreenParams.LowerBound());
-                circle.YPos = circle.YPos + diff;
-                circle.YDirection = -circle.YDirection;
-            }
-            if (circle.XPos > ScreenParams.UpperXBound())
-            {
-                double diff = Math.Abs(circle.YPos - ScreenParams.UpperXBound());
-                circle.XPos = circle.XPos - diff;
-                circle.XDirection = -circle.XDirection;
-            }
-            if (circle.YPos > ScreenParams.UpperYBound())
-            {
-                double diff = Math.Abs(circle.YPos - ScreenParams.UpperYBound());
-                circle.YPos = circle.YPos - diff;
-                circle.YDirection = -circle.YDirection;
-            }
-            return circle;
         }
 
-        [Obsolete]
-        private void ResolveObjectCollision(ref MovableDto dto1, ref MovableDto dto2)
+        private void ResolveWallCollision(MovableEntity circle)
         {
-            throw new NotImplementedException();
+            try
+            {
+                circle.TryLock();
+                double newXDir = circle.XDirection;
+                double newYDir = circle.YDirection;
+                if (circle.XPos < ScreenParams.LowerBound())
+                {
+                    newXDir *= -1;
+                }
+                if (circle.YPos < ScreenParams.LowerBound())
+                {
+                    newYDir *= -1;
+                }
+                if (circle.XPos > ScreenParams.UpperXBound())
+                {
+                    newXDir *= -1;
+                }
+                if (circle.YPos > ScreenParams.UpperYBound())
+                {
+                    newYDir *= -1;
+                }
+                circle.Update(newXDir, newYDir);
+            }
+            finally
+            {
+                circle.ReleaseLock();
+            }
+        }
+
+        private void ResolveCircleCollision(MovableEntity circle1, MovableEntity circle2)
+        {
+            try
+            {
+                if (circle1.Id < circle2.Id)
+                {
+                    circle1.TryLock();
+                    circle2.TryLock();
+                }
+                else
+                {
+                    circle2.TryLock();
+                    circle1.TryLock();
+                }
+                double distance = Distance(circle1, circle2);
+                bool willCollide = false;
+                if (distance < ScreenParams.CircleRadius * 2)
+                {
+                    willCollide = true;
+                }
+                if (willCollide)
+                {
+                    double xDir = (circle2.XPos - circle1.XPos) / distance;
+                    double yDir = (circle2.YPos - circle1.YPos) / distance;
+                    double xPerpendicular = -yDir;
+                    double yPerpendicular = xDir;
+                    double response1 = circle1.XDirection * xPerpendicular + circle1.YDirection * yPerpendicular;
+                    double response2 = circle2.XDirection * xPerpendicular + circle2.YDirection * yPerpendicular;
+                    circle1.Update(xPerpendicular * response1, yPerpendicular * response1);
+                    circle2.Update(xPerpendicular * response2, yPerpendicular * response2);
+                }
+            }
+            finally
+            {
+                circle2.ReleaseLock();
+                circle1.ReleaseLock();
+            }
+        }
+        private double Distance(MovableEntity circle1, MovableEntity circle2)
+        {
+            double xDist = circle1.XPos - circle2.XPos;
+            double yDist = circle1.YPos - circle2.YPos;
+            return Math.Sqrt(xDist * xDist + yDist * yDist);
         }
     }
 }

@@ -8,11 +8,12 @@ namespace Data
 {
     public abstract class DataFactory
     {
-        public static IMovableRepository getCircleRepository(int width, int height, double radius)
+        public static IMovableRepository getCircleRepository(int width, int height, double radius, double speed)
         {
             ScreenParams.Width = width;
             ScreenParams.Height = height;
             ScreenParams.CircleRadius = radius;
+            ScreenParams.Speed = speed;
             return new CircleRepository();
         }
 

@@ -23,24 +23,6 @@ namespace Logic.Dto
         }
 
         /*
-        public override bool ObjectCollision(MovableDto other)
-        {
-            return Distance(other) < ScreenParams.CircleRadius * 2;
-        }
-
-        public override bool WallCollision()
-        {
-            if (this.XPos < ScreenParams.LowerBound() ||
-                    this.YPos < ScreenParams.LowerBound() || 
-                    this.XPos > ScreenParams.UpperXBound() ||
-                    this.YPos > ScreenParams.UpperYBound())
-            {
-                return true;
-            }
-            return false;
-        }
-        */
-
         public override void ResolveWallCollision()
         {
             try
@@ -122,5 +104,6 @@ namespace Logic.Dto
                 ReleaseLock();
             }
         }
+        */
     }
 }

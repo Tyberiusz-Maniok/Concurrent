@@ -1,4 +1,5 @@
-﻿using Logic.Dto;
+﻿using Data.Entity;
+using Logic.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
