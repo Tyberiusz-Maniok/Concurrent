@@ -14,7 +14,7 @@ namespace Data.Dao
         {
             this.circles = new List<MovableEntity>();
         }
-        public void Create(int count)
+        public List<MovableEntity> Create(int count)
         {
             for (int i = 0; i < count; i++)
             {
@@ -23,6 +23,7 @@ namespace Data.Dao
                     ClampXPos(random.NextDouble() * ScreenParams.Width), ClampYPos(random.NextDouble() * ScreenParams.Height),
                         xDir, Math.Sqrt(1 - xDir)));
             }
+            return this.circles;
         }
 
         public MovableEntity Get(int id)
