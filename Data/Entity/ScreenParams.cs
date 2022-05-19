@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Data.Entity
 {
-    internal static class ScreenParams
+    public abstract class ScreenParams
     {
-        public static int Width { get; set; }
-        public static int Height { get; set; }
-        public static double CircleRadius { get; set; }
+        public static int Width { get; internal set; }
+        public static int Height { get; internal set; }
+        public static double CircleRadius { get; internal set; }
         public static double Speed { get; internal set; }
 
         public static double UpperXBound()

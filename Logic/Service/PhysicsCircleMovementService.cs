@@ -5,6 +5,7 @@ using Logic.Dto;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,13 +38,17 @@ namespace Logic.Service
 
         public List<MovableDto> GetCircles()
         {
-            throw new NotImplementedException();
+            return EntityToDto(Circles);
         }
 
         public List<MovableDto> InitCircles(int count)
         {
-            circleRepository.Create(count);
-            return null;
+            Circles = circleRepository.Create(count);
+            foreach (MovableEntity circle in Circles)
+            {
+                circle.PropertyChanged += HandleCircleEvent;
+            }
+            return EntityToDto(circleRepository.GetAll());
         }
 
         private List<MovableDto> EntityToDto(List<MovableEntity> entities)
@@ -56,11 +61,18 @@ namespace Logic.Service
             return result;
         }
 
-        private void ResolveCollision(ref MovableEntity circle)
+        private void HandleCircleEvent(object sender, PropertyChangedEventArgs evt)
+        {
+            MovableEntity circle = (MovableEntity)sender;
+            Task col = new Task(() => ResolveCollision(circle));
+            col.Start();
+            col.Wait();
+        }
+
+        private void ResolveCollision(MovableEntity circle)
         {
             ResolveWallCollision(circle);
-            foreach (MovableEntity c in Circles)
-            {
+            foreach (MovableEntity c in Circles) {
                 if (!c.Equals(circle))
                 {
                     ResolveCircleCollision(circle, c);

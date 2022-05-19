@@ -10,13 +10,13 @@ namespace Data.Entity
     [Serializable]
     public abstract class MovableEntity : INotifyPropertyChanged
     {
-        public static int nextId = 1;
+        private static int nextId = 1;
         private static Random random = new Random();
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public int Id { get; set; }
-        public double XPos { get; set; }
-        public double YPos { get; set; }
+        public int Id { get; private set; }
+        public double XPos { get; private set; }
+        public double YPos { get; private set; }
         public double XDirection { get; private set; }
         public double YDirection { get; private set; }
 
@@ -67,5 +67,10 @@ namespace Data.Entity
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        public abstract void Move();
+        public abstract void Update(double xDirection, double yDirection);
+        public abstract void TryLock();
+        public abstract void ReleaseLock();
     }
 }

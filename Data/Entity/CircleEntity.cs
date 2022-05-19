@@ -9,7 +9,6 @@ namespace Data.Entity
     {
         
         public CircleEntity(double xPos, double yPos, double targetXPos, double targetYPos) : base(xPos, yPos, targetXPos, targetYPos) { }
-
     }
 }
 
