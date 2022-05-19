@@ -1,26 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 
 namespace Data.Entity
 {
     [Serializable]
-    public abstract class MovableEntity
+    public abstract class MovableEntity : INotifyPropertyChanged
     {
         public static int nextId = 1;
+        private static Random random = new Random();
+
+        public event PropertyChangedEventHandler PropertyChanged;
         public int Id { get; set; }
         public double XPos { get; set; }
         public double YPos { get; set; }
-        public double TargetXPos { get; set; }
-        public double TargetYPos { get; set; }
+        public double XDirection { get; private set; }
+        public double YDirection { get; private set; }
 
-        public MovableEntity(double xPos, double yPos, double targetXPos, double targetYPos)
+        protected Mutex mutex = new Mutex();
+
+        public MovableEntity(double xPos, double yPos, double xDirection, double yDirection)
         {
             Id = nextId++;
             XPos = xPos;
             YPos = yPos;
-            TargetXPos = targetXPos;
-            TargetYPos = targetYPos;
+            XDirection = xDirection;
+            YDirection = yDirection;
+        }
+
+
+        public virtual void Move()
+        {
+            try
+            {
+                TryLock();
+                this.XPos += this.XDirection * ScreenParams.Speed;
+                this.YPos += this.YDirection * ScreenParams.Speed;
+                
+
+            }
+            finally
+            {
+                ReleaseLock();
+                OnPropertyChanged();
+            }
+        }
+
+        public virtual void Update(double xDirection, double yDirection)
+        {
+            this.XDirection = xDirection;
+            this.YDirection = yDirection;
+        }
+        public virtual void TryLock()
+        {
+            mutex.WaitOne();
+        }
+        public virtual void ReleaseLock()
+        {
+            mutex.ReleaseMutex();
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

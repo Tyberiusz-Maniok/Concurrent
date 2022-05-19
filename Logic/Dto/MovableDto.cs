@@ -46,8 +46,8 @@ namespace Logic.Dto
             this.Id = entity.Id;
             this.XPos = entity.XPos;
             this.YPos = entity.YPos;
-            this.XDirection = entity.TargetXPos;
-            this.YDirection = entity.TargetYPos;
+            this.XDirection = entity.XDirection;
+            this.YDirection = entity.YDirection;
         }
 
         public override bool Equals(Object obj)
@@ -67,20 +67,17 @@ namespace Logic.Dto
 
         public abstract double Distance(MovableDto other);
 
-        //public abstract bool WallCollision();
-        //public abstract bool ObjectCollision(MovableDto other);
-
+        /*
         public abstract void ResolveWallCollision();
         public abstract void ResolveObjectCollision(MovableDto other);
-
         public virtual void TryLock()
         {
             mutex.WaitOne();
         }
-
         public virtual void ReleaseLock()
         {
             mutex.ReleaseMutex();
         }
+        */
     }
 }

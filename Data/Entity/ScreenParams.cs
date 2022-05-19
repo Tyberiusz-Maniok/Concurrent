@@ -9,6 +9,7 @@ namespace Data.Entity
         public static int Width { get; set; }
         public static int Height { get; set; }
         public static double CircleRadius { get; set; }
+        public static double Speed { get; internal set; }
 
         public static double UpperXBound()
         {

@@ -7,43 +7,19 @@ namespace Data.Dao
 {
     internal class CircleRepository : IMovableRepository
     {
-        private List<MovableEntity> circles;
         private Random random = new Random();
 
-        public CircleRepository()
+        List<MovableEntity> IMovableRepository.Create(int count)
         {
-            this.circles = new List<MovableEntity>();
-        }
-        public void Create(int count)
-        {
+            List<MovableEntity> circles = new List<MovableEntity>();
             for (int i = 0; i < count; i++)
             {
                 double xDir = random.NextDouble();
-                this.circles.Add(new CircleEntity(
+                circles.Add(new CircleEntity(
                     ClampXPos(random.NextDouble() * ScreenParams.Width), ClampYPos(random.NextDouble() * ScreenParams.Height),
                         xDir, Math.Sqrt(1 - xDir)));
             }
-        }
-
-        public MovableEntity Get(int id)
-        {
-            return this.circles.Find(circle => circle.Id == id);
-        }
-
-        public List<MovableEntity> GetAll()
-        {
-            return this.circles;
-        }
-
-        public void Update(int id, MovableEntity entity)
-        {
-            this.circles.Remove(Get(id));
-            this.circles.Add(entity);
-        }
-
-        public void UpdateAll(List<MovableEntity> items)
-        {
-            this.circles = items;
+            return circles;
         }
 
         private double ClampXPos(double pos)
