@@ -38,7 +38,7 @@ namespace Logic.Service
 
         public List<MovableDto> GetCircles()
         {
-            throw new NotImplementedException();
+            return EntityToDto(Circles);
         }
 
         public List<MovableDto> InitCircles(int count)

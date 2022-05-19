@@ -70,12 +70,10 @@ namespace Logic.Dto
         /*
         public abstract void ResolveWallCollision();
         public abstract void ResolveObjectCollision(MovableDto other);
-
         public virtual void TryLock()
         {
             mutex.WaitOne();
         }
-
         public virtual void ReleaseLock()
         {
             mutex.ReleaseMutex();
