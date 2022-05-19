@@ -25,7 +25,8 @@ namespace Model.Dao
 
         public void UpdateAllPosition()
         {
-            List<MovableDto> circlesDto = circleMovementService.calcPosBatch();
+            circleMovementService.calcPosBatch();
+            List<MovableDto> circlesDto = circleMovementService.GetCircles();
             List<Circle> result = new List<Circle>();
             foreach (MovableDto dto in circlesDto)
             {

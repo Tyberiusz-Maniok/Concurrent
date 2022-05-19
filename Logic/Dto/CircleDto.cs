@@ -22,105 +22,18 @@ namespace Logic.Dto
             return Math.Sqrt(xDist * xDist + yDist * yDist);
         }
 
-        /*
-        public override bool ObjectCollision(MovableDto other)
-        {
-            return Distance(other) < ScreenParams.CircleRadius * 2;
-        }
 
-        public override bool WallCollision()
+        /*
+        public abstract void ResolveWallCollision();
+        public abstract void ResolveObjectCollision(MovableDto other);
+        public virtual void TryLock()
         {
-            if (this.XPos < ScreenParams.LowerBound() ||
-                    this.YPos < ScreenParams.LowerBound() || 
-                    this.XPos > ScreenParams.UpperXBound() ||
-                    this.YPos > ScreenParams.UpperYBound())
-            {
-                return true;
-            }
-            return false;
+            mutex.WaitOne();
+        }
+        public virtual void ReleaseLock()
+        {
+            mutex.ReleaseMutex();
         }
         */
-
-        public override void ResolveWallCollision()
-        {
-            try
-            {
-                TryLock();
-                if (XPos < ScreenParams.LowerBound())
-                {
-                    double diff = Math.Abs(XPos - ScreenParams.LowerBound());
-                    XPos += diff;
-                    XDirection *= -1;
-                }
-                if (YPos < ScreenParams.LowerBound())
-                {
-                    double diff = Math.Abs(YPos - ScreenParams.LowerBound());
-                    YPos += diff;
-                    YDirection *= -1;
-                }
-                if (XPos > ScreenParams.UpperXBound())
-                {
-                    double diff = Math.Abs(YPos - ScreenParams.UpperXBound());
-                    XPos -= diff;
-                    XDirection *= -1;
-                }
-                if (YPos > ScreenParams.UpperYBound())
-                {
-                    double diff = Math.Abs(YPos - ScreenParams.UpperYBound());
-                    YPos -= diff;
-                    YDirection *= -1;
-                }
-            }
-            finally
-            {
-                ReleaseLock();
-            }
-        }
-
-        public override void ResolveObjectCollision(MovableDto other)
-        {
-            try
-            {
-                if (Id < other.Id)
-                {
-                    TryLock();
-                    other.TryLock();
-                }
-                else
-                {
-                    other.TryLock();
-                    TryLock();
-                }
-                double distance = Distance(other);
-                bool willCollide = false;
-                if (distance < ScreenParams.CircleRadius * 2)
-                {
-                    willCollide = true;
-                }
-                if (willCollide)
-                {
-                    double overlap = (ScreenParams.CircleRadius * 2 - distance) / 2;
-                    double xDir = (other.XPos - XPos) / distance;
-                    double yDir = (other.YPos - YPos) / distance;
-                    XPos -= xDir * overlap;
-                    YPos -= yDir * overlap;
-                    other.XPos += xDir * overlap;
-                    other.YPos += yDir * overlap;
-                    double xPerpendicular = -yDir;
-                    double yPerpendicular = xDir;
-                    double response1 = XDirection * xPerpendicular + YDirection * yPerpendicular;
-                    double response2 = other.XDirection * xPerpendicular + other.YDirection * yPerpendicular;
-                    XDirection = xPerpendicular * response1;
-                    YDirection = yPerpendicular * response1;
-                    other.XDirection = xPerpendicular * response2;
-                    other.YDirection = yPerpendicular * response2;
-                }
-            }
-            finally
-            {
-                other.ReleaseLock();
-                ReleaseLock();
-            }
-        }
     }
 }

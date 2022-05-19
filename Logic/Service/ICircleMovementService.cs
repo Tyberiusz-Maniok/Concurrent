@@ -10,8 +10,9 @@ namespace Logic.Service
     /// </summary>
     public interface ICircleMovementService
     {
-        //MovableDto calcPos(MovableDto dto);
-        List<MovableDto> calcPosBatch();
+        void calcPosBatch();
         List<MovableDto> InitCircles(int count);
+
+        List<MovableDto> GetCircles();
     }
 }
