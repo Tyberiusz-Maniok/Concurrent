@@ -48,7 +48,7 @@ namespace Logic.Service
             {
                 circle.PropertyChanged += HandleCircleEvent;
             }
-            return EntityToDto(circleRepository.GetAll());
+            return EntityToDto(Circles);
         }
 
         private List<MovableDto> EntityToDto(List<MovableEntity> entities)

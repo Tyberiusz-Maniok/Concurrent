@@ -68,9 +68,5 @@ namespace Data.Entity
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public abstract void Move();
-        public abstract void Update(double xDirection, double yDirection);
-        public abstract void TryLock();
-        public abstract void ReleaseLock();
     }
 }
