@@ -12,6 +12,7 @@ namespace Data.Entity
     {
         private static int nextId = 1;
         private static Random random = new Random();
+        private static Logger _logger =  new Logger();
 
         public event PropertyChangedEventHandler PropertyChanged;
         public int Id { get; private set; }
@@ -47,6 +48,7 @@ namespace Data.Entity
                 ReleaseLock();
                 OnPropertyChanged();
             }
+            _logger.SaveLogsToFile(this);
         }
 
         public virtual void Update(double xDirection, double yDirection)

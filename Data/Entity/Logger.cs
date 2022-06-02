@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Data
 {
-    public class Logger
+    internal class Logger
     {
         private object _lock = new object();
 
@@ -28,7 +28,7 @@ namespace Data
 
             lock (_lock)
             {
-                File.AppendAllText(Path.GetFullPath(@"..\..\..\..\logs.json"), json);
+                File.AppendAllText(Path.GetFullPath(@"..\..\..\..\Logs\logs.json"), json);
             }
         }
     }
