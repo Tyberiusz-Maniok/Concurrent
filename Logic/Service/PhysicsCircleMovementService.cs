@@ -7,7 +7,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Logic.Service
@@ -16,11 +18,27 @@ namespace Logic.Service
     {
         private IMovableRepository circleRepository;
         private LockableList<MovableEntity> Circles;
+        private int interval = 20000;
+        private Stopwatch stopwatch = new Stopwatch();
+        private CancellationToken token = new CancellationTokenSource().Token;
 
         public PhysicsCircleMovementService(IMovableRepository circleRepository)
         {
             this.circleRepository = circleRepository;
             Circles = new LockableList<MovableEntity>();
+            Task.Run(() => Log());
+        }
+
+        private async void Log()
+        {
+            while (!token.IsCancellationRequested)
+            {
+                stopwatch.Reset();
+                stopwatch.Start();
+                circleRepository.Log(Circles);
+                stopwatch.Stop();
+                await Task.Delay((int)(interval - stopwatch.ElapsedMilliseconds), token);
+            }
         }
 
         public void calcPosBatch()

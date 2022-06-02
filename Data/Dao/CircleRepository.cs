@@ -2,15 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Data.Dao
 {
     internal class CircleRepository : IMovableRepository
     {
         private Random random = new Random();
+        private List<MovableEntity> Circles = new List<MovableEntity>();
+        private Logger logger = new Logger();
 
-        List<MovableEntity> IMovableRepository.Create(int count, PropertyChangedEventHandler propertyChanged)
+        public override List<MovableEntity> Create(int count, PropertyChangedEventHandler propertyChanged)
         {
             List<MovableEntity> circles = new List<MovableEntity>();
             for (int i = 0; i < count; i++)
@@ -21,7 +25,16 @@ namespace Data.Dao
                     ClampYPos(random.NextDouble() * ScreenParams.Height),
                         xDir, Math.Sqrt(1 - xDir), propertyChanged));
             }
+            Circles = circles;
             return circles;
+        }
+
+        public override async Task Log(List<MovableEntity> circles)
+        {
+            foreach (MovableEntity circle in Circles)
+            {
+                logger.SaveLogsToFile(circle);
+            }
         }
 
         private double ClampXPos(double pos)
