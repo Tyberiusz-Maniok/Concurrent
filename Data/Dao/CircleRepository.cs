@@ -31,7 +31,7 @@ namespace Data.Dao
 
         public override async Task Log(List<MovableEntity> circles)
         {
-            foreach (MovableEntity circle in Circles)
+            foreach (MovableEntity circle in circles)
             {
                 logger.SaveLogsToFile(circle);
             }
