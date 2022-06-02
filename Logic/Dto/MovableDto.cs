@@ -67,17 +67,5 @@ namespace Logic.Dto
 
         public abstract double Distance(MovableDto other);
 
-        /*
-        public abstract void ResolveWallCollision();
-        public abstract void ResolveObjectCollision(MovableDto other);
-        public virtual void TryLock()
-        {
-            mutex.WaitOne();
-        }
-        public virtual void ReleaseLock()
-        {
-            mutex.ReleaseMutex();
-        }
-        */
     }
 }

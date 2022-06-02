@@ -14,7 +14,7 @@ namespace DataTest
         public void CreateTest()
         {
             IMovableRepository circleRepo = new CircleRepository();
-            circleRepo.Create(10);
+            circleRepo.Create(10, null);
 /*            Assert.Equal(10, circleRepo.GetAll().Count());*/
         }
     }

@@ -2,6 +2,7 @@
 using Data.Entity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Data
@@ -17,9 +18,9 @@ namespace Data
             return new CircleRepository();
         }
 
-        public static MovableEntity CreateCicle(double xPos, double yPos, double xDirection, double yDirection)
+        public static MovableEntity CreateCicle(double xPos, double yPos, double xDirection, double yDirection, PropertyChangedEventHandler propertyChanged)
         {
-            return new CircleEntity(xPos, yPos, xDirection, yDirection);
+            return new CircleEntity(xPos, yPos, xDirection, yDirection, propertyChanged);
         }
     }
 }
