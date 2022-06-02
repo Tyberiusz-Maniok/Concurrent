@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Data.Dao
 {
-    public interface IMovableRepository
+    public abstract class IMovableRepository
     {
-        List<MovableEntity> Create(int count, PropertyChangedEventHandler propertyChanged);
+        public abstract List<MovableEntity> Create(int count, PropertyChangedEventHandler propertyChanged);
+        public virtual async Task Log(List<MovableEntity> circles) { }
     }
 }
