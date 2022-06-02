@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Data.Entity
 {
@@ -22,30 +24,33 @@ namespace Data.Entity
 
         protected Mutex mutex = new Mutex();
 
-        public MovableEntity(double xPos, double yPos, double xDirection, double yDirection)
+        public MovableEntity(double xPos, double yPos, double xDirection, double yDirection, PropertyChangedEventHandler propertyChanged)
         {
             Id = nextId++;
             XPos = xPos;
             YPos = yPos;
             XDirection = xDirection;
             YDirection = yDirection;
+            PropertyChanged += propertyChanged;
         }
 
-
-        public virtual void Move()
+        public virtual void Move(float interval = 1, bool triggerPropChange = true)
         {
             try
             {
                 TryLock();
-                this.XPos += this.XDirection * ScreenParams.Speed;
-                this.YPos += this.YDirection * ScreenParams.Speed;
+                this.XPos += this.XDirection * ScreenParams.Speed * interval;
+                this.YPos += this.YDirection * ScreenParams.Speed * interval;
                 
 
             }
             finally
             {
                 ReleaseLock();
-                OnPropertyChanged();
+                if(triggerPropChange)
+                {
+                    OnPropertyChanged();
+                }
             }
         }
 

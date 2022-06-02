@@ -1,6 +1,7 @@
 ﻿using Data;
 using Data.Dao;
 using Data.Entity;
+using Logic.Collections;
 using Logic.Dto;
 using System;
 using System.Collections.Concurrent;
@@ -14,12 +15,12 @@ namespace Logic.Service
     internal class PhysicsCircleMovementService : ICircleMovementService
     {
         private IMovableRepository circleRepository;
-        private List<MovableEntity> Circles;
+        private LockableList<MovableEntity> Circles;
 
         public PhysicsCircleMovementService(IMovableRepository circleRepository)
         {
             this.circleRepository = circleRepository;
-            Circles = new List<MovableEntity>();
+            Circles = new LockableList<MovableEntity>();
         }
 
         public void calcPosBatch()
@@ -43,10 +44,11 @@ namespace Logic.Service
 
         public List<MovableDto> InitCircles(int count)
         {
-            Circles = circleRepository.Create(count);
-            foreach (MovableEntity circle in Circles)
+            List<MovableEntity> crcls = circleRepository.Create(count, HandleCircleEvent);
+            foreach(MovableEntity circle in crcls)
             {
-                circle.PropertyChanged += HandleCircleEvent;
+                //circle.PropertyChanged += HandleCircleEvent;
+                Circles.Add(circle);
             }
             return EntityToDto(Circles);
         }
@@ -72,12 +74,22 @@ namespace Logic.Service
         private void ResolveCollision(MovableEntity circle)
         {
             ResolveWallCollision(circle);
-            foreach (MovableEntity c in Circles) {
-                if (!c.Equals(circle))
+            try
+            {
+                Circles.TryLock();
+                foreach (MovableEntity c in Circles)
                 {
-                    ResolveCircleCollision(circle, c);
+                    if (!c.Equals(circle))
+                    {
+                        ResolveCircleCollision(circle, c);
+                    }
                 }
             }
+            finally
+            {
+                Circles.ReleaseLock();
+            }
+
         }
 
         private void ResolveWallCollision(MovableEntity circle)
@@ -113,18 +125,6 @@ namespace Logic.Service
 
         private void ResolveCircleCollision(MovableEntity circle1, MovableEntity circle2)
         {
-            try
-            {
-                if (circle1.Id < circle2.Id)
-                {
-                    circle1.TryLock();
-                    circle2.TryLock();
-                }
-                else
-                {
-                    circle2.TryLock();
-                    circle1.TryLock();
-                }
                 double distance = Distance(circle1, circle2);
                 bool willCollide = false;
                 if (distance < ScreenParams.CircleRadius * 2)
@@ -139,15 +139,11 @@ namespace Logic.Service
                     double yPerpendicular = xDir;
                     double response1 = circle1.XDirection * xPerpendicular + circle1.YDirection * yPerpendicular;
                     double response2 = circle2.XDirection * xPerpendicular + circle2.YDirection * yPerpendicular;
+                    circle1.Move(-0.5f, false);
+                    circle2.Move(-0.5f, false);
                     circle1.Update(xPerpendicular * response1, yPerpendicular * response1);
                     circle2.Update(xPerpendicular * response2, yPerpendicular * response2);
                 }
-            }
-            finally
-            {
-                circle2.ReleaseLock();
-                circle1.ReleaseLock();
-            }
         }
         private double Distance(MovableEntity circle1, MovableEntity circle2)
         {
