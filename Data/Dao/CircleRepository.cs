@@ -29,14 +29,6 @@ namespace Data.Dao
             return circles;
         }
 
-        public override async Task Log(List<MovableEntity> circles)
-        {
-            foreach (MovableEntity circle in circles)
-            {
-                logger.SaveLogsToFile(circle);
-            }
-        }
-
         private double ClampXPos(double pos)
         {
             if (pos > ScreenParams.UpperXBound())
