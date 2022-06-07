@@ -70,15 +70,15 @@ namespace ViewModel
         private void StopAction()
         {
             _keepUpdating = false;
-            //circleUpdater.Join();
+            circleUpdater.Join();
             
         }
         public void StartAction()
         {
-            //_keepUpdating = true;
+            _keepUpdating = true;
             Circles = _model.InitCircles(count);
-            //circleUpdater = new Thread(() => UpdateCircles());
-            //circleUpdater.Start();
+            circleUpdater = new Thread(() => UpdateCircles());
+            circleUpdater.Start();
             
         }
 

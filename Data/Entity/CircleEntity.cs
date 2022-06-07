@@ -12,7 +12,7 @@ namespace Data.Entity
     {
         private Task movement;
         private Stopwatch stopwatch = new Stopwatch();
-        private int targetInterval = 10;
+        private int targetInterval = 1;
 
         public CircleEntity(double xPos, double yPos, double targetXPos,
             double targetYPos, PropertyChangedEventHandler propertyChanged) :
@@ -30,7 +30,7 @@ namespace Data.Entity
             {
                 stopwatch.Reset();
                 stopwatch.Start();
-                Move(stopwatch.ElapsedMilliseconds);
+                Move(targetInterval);
                 stopwatch.Stop();
                 await Task.Delay((int)(10), cancellationToken);
             }
