@@ -20,39 +20,17 @@ namespace Logic.Service
         private LockableList<MovableEntity> Circles;
         private int interval = 20000;
         private Stopwatch stopwatch = new Stopwatch();
-        private CancellationToken token = new CancellationTokenSource().Token;
+        CancellationTokenSource tokenSource = new CancellationTokenSource();
+        //private CancellationToken cancellationToken = new CancellationTokenSource().Token;
 
         public PhysicsCircleMovementService(IMovableRepository circleRepository)
         {
             this.circleRepository = circleRepository;
             Circles = new LockableList<MovableEntity>();
-            Task.Run(() => Log());
-        }
-
-        private async void Log()
-        {
-            while (!token.IsCancellationRequested)
-            {
-                stopwatch.Reset();
-                stopwatch.Start();
-                circleRepository.Log(Circles);
-                stopwatch.Stop();
-                await Task.Delay((int)(interval - stopwatch.ElapsedMilliseconds), token);
-            }
         }
 
         public void calcPosBatch()
         {
-            List<Task> tasks = new List<Task>();
-            foreach (MovableEntity circle in Circles)
-            {
-                tasks.Add(new Task(() => circle.Move()));
-            }
-            foreach (Task task in tasks)
-            {
-                task.Start();
-            }
-            Task.WaitAll(tasks.ToArray());
         }
 
         public List<MovableDto> GetCircles()
@@ -63,10 +41,18 @@ namespace Logic.Service
         public List<MovableDto> InitCircles(int count)
         {
             List<MovableEntity> crcls = circleRepository.Create(count, HandleCircleEvent);
+            foreach(MovableEntity circle in Circles)
+            {
+                circle.StopMovement();
+            }
+            Circles.Clear();
             foreach(MovableEntity circle in crcls)
             {
-                //circle.PropertyChanged += HandleCircleEvent;
                 Circles.Add(circle);
+            }
+            foreach(MovableEntity circle in Circles)
+            {
+                circle.StartMovement(tokenSource.Token);
             }
             return EntityToDto(Circles);
         }
@@ -84,9 +70,10 @@ namespace Logic.Service
         private void HandleCircleEvent(object sender, PropertyChangedEventArgs evt)
         {
             MovableEntity circle = (MovableEntity)sender;
-            Task col = new Task(() => ResolveCollision(circle));
-            col.Start();
-            col.Wait();
+            ResolveCollision(circle);
+            //Task col = new Task(() => ResolveCollision(circle));
+            //col.Start();
+            //col.Wait();
         }
 
         private void ResolveCollision(MovableEntity circle)
@@ -94,7 +81,7 @@ namespace Logic.Service
             ResolveWallCollision(circle);
             try
             {
-                Circles.TryLock();
+                //Circles.TryLock();
                 foreach (MovableEntity c in Circles)
                 {
                     if (!c.Equals(circle))
@@ -105,7 +92,7 @@ namespace Logic.Service
             }
             finally
             {
-                Circles.ReleaseLock();
+                //Circles.ReleaseLock();
             }
 
         }
@@ -114,7 +101,7 @@ namespace Logic.Service
         {
             try
             {
-                circle.TryLock();
+                //circle.TryLock();
                 double newXDir = circle.XDirection;
                 double newYDir = circle.YDirection;
                 if (circle.XPos < ScreenParams.LowerBound())
@@ -133,11 +120,11 @@ namespace Logic.Service
                 {
                     newYDir *= -1;
                 }
-                circle.Update(newXDir, newYDir);
+                circle.Update(newXDir, newYDir, true);
             }
             finally
             {
-                circle.ReleaseLock();
+                //circle.ReleaseLock();
             }
         }
 
@@ -157,10 +144,10 @@ namespace Logic.Service
                     double yPerpendicular = xDir;
                     double response1 = circle1.XDirection * xPerpendicular + circle1.YDirection * yPerpendicular;
                     double response2 = circle2.XDirection * xPerpendicular + circle2.YDirection * yPerpendicular;
-                    circle1.Move(-0.5f, false);
-                    circle2.Move(-0.5f, false);
-                    circle1.Update(xPerpendicular * response1, yPerpendicular * response1);
-                    circle2.Update(xPerpendicular * response2, yPerpendicular * response2);
+                    //circle1.Move(-0.5f, false);
+                    //circle2.Move(-0.5f, false);
+                    circle1.Update(xPerpendicular * response1, yPerpendicular * response1, true);
+                    circle2.Update(xPerpendicular * response2, yPerpendicular * response2, true);
                 }
         }
         private double Distance(MovableEntity circle1, MovableEntity circle2)

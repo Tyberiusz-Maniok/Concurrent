@@ -14,14 +14,13 @@ namespace Data.Entity
     {
         private static int nextId = 1;
         private static Random random = new Random();
-        private static Logger _logger =  new Logger();
 
         public event PropertyChangedEventHandler PropertyChanged;
         public int Id { get; private set; }
-        public double XPos { get; private set; }
-        public double YPos { get; private set; }
-        public double XDirection { get; private set; }
-        public double YDirection { get; private set; }
+        public double XPos { get; protected set; }
+        public double YPos { get; protected set; }
+        public double XDirection { get; protected set; }
+        public double YDirection { get; protected set; }
 
         protected Mutex mutex = new Mutex();
 
@@ -35,37 +34,18 @@ namespace Data.Entity
             PropertyChanged += propertyChanged;
         }
 
-        public virtual void Move(float interval = 1, bool triggerPropChange = true)
-        {
-            try
-            {
-                TryLock();
-                this.XPos += this.XDirection * ScreenParams.Speed * interval;
-                this.YPos += this.YDirection * ScreenParams.Speed * interval;
-                
+        public abstract void StartMovement(CancellationToken cancellationToken);
+        public abstract void StopMovement();
 
-            }
-            finally
-            {
-                ReleaseLock();
-                if(triggerPropChange)
-                {
-                    OnPropertyChanged();
-                }
-            }
-            _logger.SaveLogsToFile(this);
-        }
+        protected abstract void Move(float interval = 1, bool triggerPropChange = true);
 
-        public virtual void Update(double xDirection, double yDirection)
-        {
-            this.XDirection = xDirection;
-            this.YDirection = yDirection;
-        }
-        public virtual void TryLock()
+        public abstract void Update(double xDirection, double yDirection, bool retrace = false);
+
+        protected virtual void TryLock()
         {
             mutex.WaitOne();
         }
-        public virtual void ReleaseLock()
+        protected virtual void ReleaseLock()
         {
             mutex.ReleaseMutex();
         }

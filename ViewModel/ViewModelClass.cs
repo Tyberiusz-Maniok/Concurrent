@@ -70,13 +70,20 @@ namespace ViewModel
         private void StopAction()
         {
             _keepUpdating = false;
-            circleUpdater.Join();
+            if (circleUpdater != null && circleUpdater.IsAlive)
+            {
+                circleUpdater.Join();
+            }
             
         }
         public void StartAction()
         {
             _keepUpdating = true;
             Circles = _model.InitCircles(count);
+            if (circleUpdater != null && circleUpdater.IsAlive)
+            {
+                circleUpdater.Join();
+            }
             circleUpdater = new Thread(() => UpdateCircles());
             circleUpdater.Start();
             
@@ -87,7 +94,7 @@ namespace ViewModel
             while (_keepUpdating)
             {
                 Circles = _model.Move();
-                Thread.Sleep(70);
+                Thread.Sleep(30);
             }
         }
         public int RectWidth
