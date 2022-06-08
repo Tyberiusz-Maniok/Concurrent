@@ -12,7 +12,13 @@ namespace Data.Dao
     {
         private Random random = new Random();
         private List<MovableEntity> Circles = new List<MovableEntity>();
-        /*private Logger logger = new Logger();*/
+        private static LoggerAbstractApi logger = new CircleLogger();
+        
+        internal static void Log (MovableEntity movable)
+        {
+            logger.Info("Move", movable);
+        }
+
 
         public override List<MovableEntity> Create(int count, PropertyChangedEventHandler propertyChanged)
         {
@@ -25,6 +31,7 @@ namespace Data.Dao
                     ClampYPos(random.NextDouble() * ScreenParams.Height),
                         xDir, Math.Sqrt(1 - xDir), propertyChanged));
             }
+
             Circles = circles;
             return circles;
         }

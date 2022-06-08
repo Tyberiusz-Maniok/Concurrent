@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Data.Dao;
 
 namespace Data.Entity
 {
@@ -47,7 +48,7 @@ namespace Data.Entity
                 {
                     OnPropertyChanged();
                 }
-                //tu
+                CircleRepository.Log((CircleEntity)this.Clone());
             }
             finally
             {
@@ -78,6 +79,13 @@ namespace Data.Entity
         public override void StopMovement()
         {
             movement = null;
+        }
+
+        public override object Clone()
+        {
+            CircleEntity circle = new CircleEntity(XPos,YPos, XDirection, YDirection, null);
+            circle.Id = Id;
+            return circle;
         }
     }
 

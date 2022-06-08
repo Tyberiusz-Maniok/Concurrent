@@ -12,40 +12,30 @@ namespace Data
     public abstract class LoggerAbstractApi
     {
         public abstract void Info(String eventType, MovableEntity circle);
-        public abstract void Info(String eventType, List<MovableEntity> circles);
 
-        public static LoggerAbstractApi Create()
-        {
-            return new BallLogger($"BouncingBallsLog {DateTime.Now:yyyy-MM-dd HH-mm-ss-ffff}");
-        }
     }
 
 
 
-    internal class BallLogger : LoggerAbstractApi
+    internal class CircleLogger : LoggerAbstractApi
     {
-        internal BallLogger(string logname)
+        internal CircleLogger()
         {
-            filename = logname + ".log";
+            filename = @"..\..\..\..\logs.json";
             messages = new Queue<String>();
             task = Run(30, CancellationToken.None);
         }
 
         public override void Info(string eventType, MovableEntity circle)
         {
-            List<MovableEntity> l = new List<MovableEntity> { circle };
-            Info(eventType, l);
-        }
-
-        public override void Info(string eventType, List<MovableEntity> circles)
-        {
             mutex.WaitOne();
-            Message m = new Message($"{DateTime.Now:yyyy-MM-dd HH-mm-ss-ffff}", eventType, circles);
+            Message m = new Message($"{DateTime.Now:yyyy-MM-dd HH-mm-ss-ffff}", eventType, circle);
             //Utrwalony stan
             messages.Enqueue(m.Serialize());
             mutex.ReleaseMutex();
             waitHandle.Set();
         }
+
 
         private async Task Run(int interval, CancellationToken cancellationToken)
         {
@@ -81,17 +71,17 @@ namespace Data
         {
             private string timestamp;
             private string eventType;
-            private List<MovableEntity> circles;
+            private MovableEntity circle;
 
             public string Timestamp { get => timestamp; }
             public string EventType { get => eventType; }
-            public List<MovableEntity> Balls { get => circles; }
+            public MovableEntity Circle { get => circle; }
 
-            public Message(string timestamp, string eventType, List<MovableEntity> circles)
+            public Message(string timestamp, string eventType, MovableEntity circle)
             {
                 this.timestamp = timestamp;
                 this.eventType = eventType;
-                this.circles = circles;
+                this.circle = circle;
             }
 
             public string Serialize()
