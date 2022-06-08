@@ -12,7 +12,7 @@ namespace Data.Dao
     {
         private Random random = new Random();
         private List<MovableEntity> Circles = new List<MovableEntity>();
-        private Logger logger = new Logger();
+        /*private Logger logger = new Logger();*/
 
         public override List<MovableEntity> Create(int count, PropertyChangedEventHandler propertyChanged)
         {

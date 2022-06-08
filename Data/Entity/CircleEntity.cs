@@ -43,14 +43,16 @@ namespace Data.Entity
                 TryLock();
                 this.XPos += this.XDirection * ScreenParams.Speed * interval;
                 this.YPos += this.YDirection * ScreenParams.Speed * interval;
-            }
-            finally
-            {
-                ReleaseLock();
                 if (triggerPropChange)
                 {
                     OnPropertyChanged();
                 }
+                //tu
+            }
+            finally
+            {
+                ReleaseLock();
+
             }
         }
 
