@@ -35,10 +35,11 @@ namespace Data.Entity
         }
 
         public abstract void StartMovement(CancellationToken cancellationToken);
+        public abstract void StopMovement();
 
-        public abstract void Move(float interval = 1, bool triggerPropChange = true);
+        protected abstract void Move(float interval = 1, bool triggerPropChange = true);
 
-        public abstract void Update(double xDirection, double yDirection);
+        public abstract void Update(double xDirection, double yDirection, bool retrace = false);
 
         protected virtual void TryLock()
         {

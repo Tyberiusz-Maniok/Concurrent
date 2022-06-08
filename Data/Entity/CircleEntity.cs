@@ -12,7 +12,7 @@ namespace Data.Entity
     {
         private Task movement;
         private Stopwatch stopwatch = new Stopwatch();
-        private int targetInterval = 1;
+        private int targetInterval = 30;
 
         public CircleEntity(double xPos, double yPos, double targetXPos,
             double targetYPos, PropertyChangedEventHandler propertyChanged) :
@@ -26,17 +26,17 @@ namespace Data.Entity
 
         private async Task Movement(CancellationToken cancellationToken)
         {
-            while(true)
+            while(!cancellationToken.IsCancellationRequested)
             {
                 stopwatch.Reset();
                 stopwatch.Start();
-                Move(targetInterval);
+                Move(1);
                 stopwatch.Stop();
-                await Task.Delay((int)(10), cancellationToken);
+                await Task.Delay((int)(targetInterval - stopwatch.ElapsedMilliseconds), cancellationToken);
             }
         }
 
-        public override void Move(float interval = 1, bool triggerPropChange = true)
+        protected override void Move(float interval = 1, bool triggerPropChange = true)
         {
             try
             {
@@ -54,11 +54,16 @@ namespace Data.Entity
             }
         }
 
-        public override void Update(double xDirection, double yDirection)
+        public override void Update(double xDirection, double yDirection, bool retrace)
         {
             try
             {
                 TryLock();
+                if (retrace)
+                {
+                    this.XPos += this.XDirection * ScreenParams.Speed * -0.5;
+                    this.YPos += this.YDirection * ScreenParams.Speed * -0.5;
+                }
                 this.XDirection = xDirection;
                 this.YDirection = yDirection;
             }
@@ -66,6 +71,11 @@ namespace Data.Entity
             {
                 ReleaseLock();
             }
+        }
+
+        public override void StopMovement()
+        {
+            movement = null;
         }
     }
 

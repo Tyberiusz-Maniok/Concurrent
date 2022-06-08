@@ -41,6 +41,11 @@ namespace Logic.Service
         public List<MovableDto> InitCircles(int count)
         {
             List<MovableEntity> crcls = circleRepository.Create(count, HandleCircleEvent);
+            foreach(MovableEntity circle in Circles)
+            {
+                circle.StopMovement();
+            }
+            Circles.Clear();
             foreach(MovableEntity circle in crcls)
             {
                 Circles.Add(circle);
@@ -115,7 +120,7 @@ namespace Logic.Service
                 {
                     newYDir *= -1;
                 }
-                circle.Update(newXDir, newYDir);
+                circle.Update(newXDir, newYDir, true);
             }
             finally
             {
@@ -139,10 +144,10 @@ namespace Logic.Service
                     double yPerpendicular = xDir;
                     double response1 = circle1.XDirection * xPerpendicular + circle1.YDirection * yPerpendicular;
                     double response2 = circle2.XDirection * xPerpendicular + circle2.YDirection * yPerpendicular;
-                    circle1.Move(-0.5f, false);
-                    circle2.Move(-0.5f, false);
-                    circle1.Update(xPerpendicular * response1, yPerpendicular * response1);
-                    circle2.Update(xPerpendicular * response2, yPerpendicular * response2);
+                    //circle1.Move(-0.5f, false);
+                    //circle2.Move(-0.5f, false);
+                    circle1.Update(xPerpendicular * response1, yPerpendicular * response1, true);
+                    circle2.Update(xPerpendicular * response2, yPerpendicular * response2, true);
                 }
         }
         private double Distance(MovableEntity circle1, MovableEntity circle2)
