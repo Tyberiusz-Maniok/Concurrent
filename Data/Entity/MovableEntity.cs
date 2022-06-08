@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 namespace Data.Entity
 {
     [Serializable]
-    public abstract class MovableEntity : INotifyPropertyChanged
+    public abstract class MovableEntity : INotifyPropertyChanged, ICloneable
     {
         private static int nextId = 1;
         private static Random random = new Random();
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public int Id { get; private set; }
+        public int Id { get; protected set; }
         public double XPos { get; protected set; }
         public double YPos { get; protected set; }
         public double XDirection { get; protected set; }
@@ -55,5 +55,6 @@ namespace Data.Entity
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        public abstract object Clone();
     }
 }
