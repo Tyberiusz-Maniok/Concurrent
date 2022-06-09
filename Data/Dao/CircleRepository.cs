@@ -11,8 +11,7 @@ namespace Data.Dao
     internal class CircleRepository : IMovableRepository
     {
         private Random random = new Random();
-        private List<MovableEntity> Circles = new List<MovableEntity>();
-        private static LoggerAbstractApi logger = new CircleLogger();
+        private static Logger logger = new CircleLogger();
         
         internal static void Log (MovableEntity movable)
         {
@@ -31,8 +30,6 @@ namespace Data.Dao
                     ClampYPos(random.NextDouble() * ScreenParams.Height),
                         xDir, Math.Sqrt(1 - xDir), propertyChanged));
             }
-
-            Circles = circles;
             return circles;
         }
 
